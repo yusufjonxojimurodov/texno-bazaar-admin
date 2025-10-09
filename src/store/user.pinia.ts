@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
-import { message } from "ant-design-vue";
+import { message, notification } from "ant-design-vue";
 import router from "../router";
+import useHelper from "./helper.pinia";
 
 const useUser = defineStore("user", {
   state: () => ({
-    user: "",
+    user: {},
     allUsers: [],
     currentPage: 0,
     pageSize: 10,
@@ -17,6 +18,7 @@ const useUser = defineStore("user", {
   actions: {
     login(form: object) {
       this.loading = true;
+      const helperStore = useHelper();
 
       api({
         url: "/api/users/login",
@@ -24,13 +26,22 @@ const useUser = defineStore("user", {
         data: form,
       })
         .then(({ data }) => {
-          localStorage.setItem("texnoBazaar", data.token);
-          message.success("Tizimga kirdingiz");
-          router.push("/dashboard/users");
+          if (data.role === "admin") {
+            localStorage.setItem("texnoBazaar", data.token);
+            helperStore.token = data.token;
+            message.success("Tizimga kirdingiz");
+            router.push("/dashboard/users");
+          } else {
+            notification.error({
+              message: "Ruxsat Berilmadi",
+              description:
+                "Siz bu platformaga kirishingiz uchun TexnoBazaar admini bo'lishingiz kerak !",
+            });
+            return;
+          }
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
+          const errorMessage = error.response?.data.message || error;
           message.error(errorMessage);
         })
         .finally(() => {
@@ -49,8 +60,7 @@ const useUser = defineStore("user", {
           this.user = data;
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
+          const errorMessage = error.response?.data.message || error;
           message.error(errorMessage);
         })
         .finally(() => {
@@ -58,7 +68,7 @@ const useUser = defineStore("user", {
         });
     },
 
-    getUsers(page = 0, size = 10) {
+    getUsers({ page = 0, size = 10, search = undefined, role = undefined }) {
       this.loading = true;
 
       api({
@@ -67,6 +77,8 @@ const useUser = defineStore("user", {
         params: {
           page,
           size,
+          search,
+          role,
         },
       })
         .then(({ data }) => {
@@ -76,8 +88,7 @@ const useUser = defineStore("user", {
           this.pageSize = size;
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
+          const errorMessage = error.response?.data.message || error;
           message.error(errorMessage);
         })
         .finally(() => {
@@ -95,11 +106,9 @@ const useUser = defineStore("user", {
       })
         .then(() => {
           message.success("Foydalanuvchi yangilandi");
-          this.getUsers();
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
+          const errorMessage = error.response?.data.message || error;
           message.error(errorMessage);
         })
         .finally(() => {
@@ -117,12 +126,12 @@ const useUser = defineStore("user", {
       })
         .then(() => {
           message.success("Rol ozgartirildi");
-          this.getUsers();
+          this.getUsers({ page: 0 });
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data?.message || "Tizimda xatolik";
+          const errorMessage = error.response?.data?.message || error;
           message.error(errorMessage);
+          console.error(error);
         })
         .finally(() => {
           this.buttonLoader = false;
@@ -137,10 +146,10 @@ const useUser = defineStore("user", {
       })
         .then(() => {
           message.success("Foydalanuvchi o'chirildi");
-          this.getUsers();
+          this.getUsers({ page: 0 });
         })
         .catch((error) => {
-          const errorMessage = error.response?.data.message;
+          const errorMessage = error.response?.data.message || error;
           message.error(errorMessage);
         })
         .finally(() => {

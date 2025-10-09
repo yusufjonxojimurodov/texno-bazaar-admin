@@ -1,15 +1,26 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { watch } from 'vue';
 import useUser from '../../store/user.pinia';
 import UserTableComponent from './components/UserTableComponent.vue';
+import UserFilterComponent from './components/UserFilterComponent.vue';
+import { useRoute } from 'vue-router';
+import { useQueryParams } from '../../utils/helpers/useQueryParams';
 
 const userStore = useUser()
+const route = useRoute()
+const { getQueries } = useQueryParams()
 
-onMounted(() => {
-    userStore.getUsers()
-})
+watch(() => route.query, () => {
+    if (!route.query.userId) {
+        userStore.getUsers({
+            search: getQueries("search") || undefined,
+            role: getQueries("role") || undefined
+        })
+    }
+}, { immediate: true })
 </script>
 
 <template>
+    <user-filter-component />
     <user-table-component />
 </template>

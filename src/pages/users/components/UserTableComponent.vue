@@ -6,7 +6,7 @@ import IconEdit from '../../../components/icons/IconEdit.vue';
 import { userColumns } from '../../../columns/user.table';
 import EditUserModal from './form/EditUserModal.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const userStore = useUser()
 const { setQueries } = useQueryParams()
@@ -16,7 +16,7 @@ const openEditModal = ref<boolean>(false)
 const handlePageChange = (pag: any) => {
   const page = pag.current ? pag.current - 1 : 0
   const size = pag.pageSize || 0
-  userStore.getUsers(page, size)
+  userStore.getUsers({ page, size })
 }
 
 function openModalEdit(id: number) {
@@ -26,14 +26,19 @@ function openModalEdit(id: number) {
   openEditModal.value = true
 }
 
+watch(openEditModal, (newValue) => {
+  if (!newValue) {
+    setQueries({
+      userId: undefined
+    })
+  }
+}, { immediate: true })
+
+
 const roleValue = ref([
   {
     label: "Sotuvchi",
     value: "seller"
-  },
-  {
-    label: "Admin",
-    value: "admin"
   },
   {
     label: "Mijoz",
@@ -51,13 +56,7 @@ async function handleRole(id: number, newRole: string, record: any) {
   record.loading = true
 
   try {
-    const res = await userStore.putRole({ role: newRole, id })
-
-    if (res?.status === 200) {
-      record.role = newRole
-    } else {
-      record.role = oldRole
-    }
+    await userStore.putRole({ role: newRole, id })
   } catch (err) {
     record.role = oldRole
   } finally {
@@ -65,8 +64,7 @@ async function handleRole(id: number, newRole: string, record: any) {
   }
 }
 
-
-const deleteUser = (id:number) => {
+const deleteUser = (id: number) => {
   userStore.deleteUser(id)
   return new Promise(resolve => {
     setTimeout(() => resolve(true), 3000);
@@ -89,21 +87,32 @@ const deleteUser = (id:number) => {
       </template>
 
       <template v-else-if="column.dataIndex === 'role'">
-        <a-select :loading="record.loading" :disabled="record.role === 'admin'" @change="(value: string) => handleRole(record._id, value, record)"
-          style="width: 110px;" size="middle" :options="roleValue" v-model:value="record.role" />
+        <a-select :loading="record.loading" :disabled="record.role === 'admin'"
+          @change="(value: string) => handleRole(record._id, value, record)" style="width: 110px;" size="middle"
+          :options="roleValue" v-model:value="record.role" />
+      </template>
+
+      <template v-else-if="column.dataIndex === 'faceRegistered'">
+        <a-tag style="width: 90px;" v-if="record.faceRegistered" color="success">
+          O'rnatilgan
+        </a-tag>
+        <a-tag style="width: 90px;" size="large" v-else color="error">
+          O'rnatilmagan
+        </a-tag>
       </template>
 
       <template v-else-if="column.dataIndex === 'actions'">
         <a-space>
-          <a-button @click="openModalEdit(record._id)" class="!flex !justify-center items-center" type="primary"
-            size="middle">
+          <a-button :disabled="record.role === 'admin'" @click="openModalEdit(record._id)"
+            class="!flex !justify-center items-center" type="primary" size="middle">
             <template #icon>
               <icon-edit class="w-5 h-5" />
             </template>
           </a-button>
-          <a-popconfirm @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q"
-            title="O'chirishga rozimisiz?">
-            <a-button danger type="primary" size="middle" class="!flex !justify-center !items-center">
+          <a-popconfirm :disabled="record.role === 'admin'" @confirm="deleteUser(record._id)" ok-text="Ha"
+            cancel-text="Yo'q" title="O'chirishga rozimisiz?">
+            <a-button :disabled="record.role === 'admin'" danger type="primary" size="middle"
+              class="!flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />
               </template>

@@ -4,6 +4,7 @@ import AppView from "../pages/AppView.vue";
 import UsersView from "../pages/users/UsersView.vue";
 import ProductsView from "../pages/products/ProductsView.vue";
 import StatisticsView from "../pages/statistic/StatisticsView.vue";
+import _404 from "../pages/_404.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -17,6 +18,7 @@ const router = createRouter({
       path: "/dashboard",
       name: "Dashboard",
       component: AppView,
+      meta: { requiresAuth: true },
       children: [
         {
           path: "users",
@@ -35,7 +37,24 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "404",
+      component: _404,
+    },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("texnoBazaar");
+
+  if (to.meta.requiresAuth && !token) {
+    next("/");
+  } else if (to.path === "/login" && token) {
+    next("/dashboard/users");
+  } else {
+    next();
+  }
 });
 
 export default router;

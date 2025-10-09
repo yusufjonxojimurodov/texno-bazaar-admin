@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import router from "../router";
 
 const useHelper = defineStore("helper", {
   state: () => ({
@@ -7,8 +8,9 @@ const useHelper = defineStore("helper", {
 
   actions: {
     leave() {
-      localStorage.getItem("texnoBazaarToken");
+      localStorage.removeItem("texnoBazaar");
       this.token = "";
+      router.push("/");
     },
   },
 });
