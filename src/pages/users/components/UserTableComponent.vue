@@ -104,14 +104,14 @@ const deleteUser = (id: number) => {
       <template v-else-if="column.dataIndex === 'actions'">
         <a-space>
           <a-button :disabled="record.role === 'admin'" @click="openModalEdit(record._id)"
-            class="!flex !justify-center items-center" type="primary" size="middle">
+            class="!flex !justify-center items-center" type="primary" size="small">
             <template #icon>
               <icon-edit class="w-5 h-5" />
             </template>
           </a-button>
           <a-popconfirm :disabled="record.role === 'admin'" @confirm="deleteUser(record._id)" ok-text="Ha"
             cancel-text="Yo'q" title="O'chirishga rozimisiz?">
-            <a-button :disabled="record.role === 'admin'" danger type="primary" size="middle"
+            <a-button :disabled="record.role === 'admin'" danger type="primary" size="small"
               class="!flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />

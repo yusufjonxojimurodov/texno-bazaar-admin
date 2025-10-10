@@ -1,0 +1,65 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { debounce } from '../../../utils/helpers/debounce';
+import { useQueryParams } from '../../../utils/helpers/useQueryParams';
+
+const { setQueries, getQueries } = useQueryParams()
+
+const searchInput = ref(getQueries("search"))
+const valueType = ref(getQueries('type'))
+const valueModel = ref(getQueries('model'))
+const models = [
+    { label: 'Samsung', value: 'Samsung' },
+    { label: 'Xiaomi', value: 'Xiaomi' },
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Google', value: 'Google' },
+    { label: "Huawei", value: "Huawei" },
+    { label: "Oppo", value: "Oppo" },
+    { label: "Vivo", value: "Vivo" },
+    { label: "Honor", value: "Honor" },
+    { label: "Boshqalar", value: "Other" },
+]
+
+const types = [
+    { label: 'Aqlli Soat', value: 'smartwatch' },
+    { label: 'Smartfon', value: 'smartfon' },
+    { label: 'Televizor', value: 'TV' },
+    { label: 'Noutbook', value: 'laptop' },
+    { label: 'Monitor', value: 'display' },
+    { label: 'Klaviatura', value: 'keyboard' },
+    { label: 'Sichqoncha', value: 'mouse' },
+    { label: 'Kompyuter', value: 'computer' },
+    { label: 'Quloqchin', value: 'headphones' },
+    { label: 'Planshet', value: 'tablets' },
+    { label: 'Zaryadlovchi qurilmalar', value: 'chargers' },
+]
+
+const handleSearch = debounce(({ target }) => {
+    setQueries({
+        search: target.value?.trim() || undefined
+    })
+}, 500)
+
+function filterType(value: string) {
+    setQueries({
+        type: value || undefined
+    })
+}
+
+function filterModel(value: string) {
+    setQueries({
+        model: value || undefined
+    })
+}
+</script>
+
+<template>
+    <div class="flex justify-end items-center gap-3 !mb-3">
+        <a-input v-model:value="searchInput" @input="handleSearch" style="width: 180px;" size="large"
+            placeholder="Qidirish..." />
+        <a-select v-model:value="valueType" @change="filterType" allow-clear style="width: 180px;" :options="types"
+            size="large" placeholder="Turini tanlang" />
+        <a-select v-model:value="valueModel" @change="filterModel" allow-clear style="width: 180px;" :options="models"
+            size="large" placeholder="Modelni tanlang" />
+    </div>
+</template>

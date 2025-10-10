@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import IconUsers from '../components/icons/IconUsers.vue';
 import IconCollapse from '../components/icons/IconCollapse.vue';
 import IconProducts from '../components/icons/IconProducts.vue';
@@ -39,6 +39,15 @@ onBeforeMount(() => {
     userStore.getMe()
     avatarStore.getAvatar()
 })
+
+watch(
+    () => route.path,
+    (newPath) => {
+        if (newPath.includes('/dashboard/users')) selectedKeys.value = ['1']
+        else if (newPath.includes('/dashboard/products')) selectedKeys.value = ['2']
+        else if (newPath.includes('/dashboard/statistics')) selectedKeys.value = ['3']
+        else selectedKeys.value = []
+    }, { immediate: true })
 </script>
 
 <template>
