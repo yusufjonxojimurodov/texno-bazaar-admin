@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 
@@ -68,13 +68,13 @@ const monthOptions = [
     },
 ]
 
-function year(value) {
+function year(value: any) {
     setQueries({
         year: value
     })
 }
 
-function month(value) {
+function month(value: any) {
     setQueries({
         month: value
     })
