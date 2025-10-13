@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 import { message } from "ant-design-vue";
 
 const instance = axios.create({
@@ -23,7 +23,16 @@ instance.interceptors.response.use(
   }
 );
 
-export const api = ({ url, open = false, ...props }) => {
+interface ApiProps extends AxiosRequestConfig {
+  url: string;
+  open?: boolean;
+}
+
+export const api = ({
+  url,
+  open = false,
+  ...props
+}: ApiProps): Promise<AxiosResponse> => {
   const token = localStorage.getItem("texnoBazaar");
 
   if (!open) {
