@@ -34,7 +34,7 @@ const types = [
     { label: 'Zaryadlovchi qurilmalar', value: 'chargers' },
 ]
 
-const handleSearch = debounce(({ target }) => {
+const handleSearch = debounce(({ target }: { target: any }) => {
     setQueries({
         search: target.value?.trim() || undefined
     })

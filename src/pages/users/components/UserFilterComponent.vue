@@ -21,12 +21,16 @@ const filterRoleOptions = ref([
         value: "seller"
     },
     {
+        label: "Moderator",
+        value: "moderator"
+    },
+    {
         label: "Bloklangan",
         value: "blocked"
     },
 ])
 
-const handleSearch = debounce(({ target }) => {
+const handleSearch = debounce(({ target }: { target: any }) => {
     setQueries({
         search: target.value?.trim() || undefined
     })

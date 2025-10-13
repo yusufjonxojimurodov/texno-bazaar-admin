@@ -4,9 +4,22 @@ import { message, notification } from "ant-design-vue";
 import router from "../router";
 import useHelper from "./helper.pinia";
 
+export interface UserInfo {
+  birthDate: string;
+  chatId: number;
+  email: string;
+  faceRegistered: boolean;
+  name: string;
+  phone: string;
+  role: string;
+  surname: string;
+  userName: string;
+  _id: string;
+}
+
 const useUser = defineStore("user", {
   state: () => ({
-    user: {},
+    user: {} as UserInfo,
     allUsers: [],
     currentPage: 0,
     pageSize: 10,
@@ -26,7 +39,7 @@ const useUser = defineStore("user", {
         data: form,
       })
         .then(({ data }) => {
-          if (data.role === "admin") {
+          if (data.role === "admin" || data.role === "moderator") {
             localStorage.setItem("texnoBazaar", data.token);
             helperStore.token = data.token;
             message.success("Tizimga kirdingiz");

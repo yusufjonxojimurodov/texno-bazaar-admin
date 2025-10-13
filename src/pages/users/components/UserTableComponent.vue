@@ -6,9 +6,10 @@ import IconEdit from '../../../components/icons/IconEdit.vue';
 import { userColumns } from '../../../columns/user.table';
 import EditUserModal from './form/EditUserModal.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const userStore = useUser()
+
 const { setQueries } = useQueryParams()
 
 const openEditModal = ref<boolean>(false)
@@ -45,10 +46,22 @@ const roleValue = ref([
     value: "customer"
   },
   {
+    label: "Moderator",
+    value: "moderator"
+  },
+  {
     label: "Bloklangan",
     value: "blocked"
   }
 ])
+
+const filteredRoleOptions = computed(() => {
+  if (userStore.user.role === "moderator") {
+    return roleValue.value.filter(opt => opt.value !== "moderator")
+  }
+
+  return roleValue.value
+})
 
 async function handleRole(id: number, newRole: string, record: any) {
   const oldRole = record.role
@@ -87,9 +100,10 @@ const deleteUser = (id: number) => {
       </template>
 
       <template v-else-if="column.dataIndex === 'role'">
-        <a-select :loading="record.loading" :disabled="record.role === 'admin'"
-          @change="(value: string) => handleRole(record._id, value, record)" style="width: 110px;" size="middle"
-          :options="roleValue" v-model:value="record.role" />
+        <a-select :loading="record.loading" :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+          (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+          " @change="(value: string) => handleRole(record._id, value, record)" style="width: 110px;" size="middle"
+          :options="filteredRoleOptions" v-model:value="record.role" />
       </template>
 
       <template v-else-if="column.dataIndex === 'faceRegistered'">
@@ -103,16 +117,20 @@ const deleteUser = (id: number) => {
 
       <template v-else-if="column.dataIndex === 'actions'">
         <a-space>
-          <a-button :disabled="record.role === 'admin'" @click="openModalEdit(record._id)"
-            class="!flex !justify-center items-center" type="primary" size="small">
+          <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+            (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+            " @click="openModalEdit(record._id)" class="!flex !justify-center items-center" type="primary"
+            size="small">
             <template #icon>
               <icon-edit class="w-5 h-5" />
             </template>
           </a-button>
-          <a-popconfirm :disabled="record.role === 'admin'" @confirm="deleteUser(record._id)" ok-text="Ha"
-            cancel-text="Yo'q" title="O'chirishga rozimisiz?">
-            <a-button :disabled="record.role === 'admin'" danger type="primary" size="small"
-              class="!flex !justify-center !items-center">
+          <a-popconfirm :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+            (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+            " @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
+            <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+              (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+              " danger type="primary" size="small" class="!flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />
               </template>

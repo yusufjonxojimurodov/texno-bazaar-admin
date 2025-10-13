@@ -36,16 +36,19 @@ function deleteProduct(id: number) {
                     record.createdBy.userName
                     }}</a>
             </template>
+            <template v-else-if="column.dataIndex === 'price'">
+                {{ record.price }}$
+            </template>
             <template v-else-if="column.dataIndex === 'discount'">
                 <div class="flex justify-center items-center">
-                    <a-tag color="success" v-if="record.discount > 0">
+                    <a-tag color="success" v-if="record.discount > 5">
                         <span class="!text-[14px] !font-semibold">
                             {{ record.discount }}%
                         </span>
                     </a-tag>
                     <a-tag color="error" v-else>
                         <span class="!text-[14px] !font-semibold">
-                            {{ record.discount }}%
+                            {{ record.discount ? record.discount : '0' }}%
                         </span>
                     </a-tag>
                 </div>
