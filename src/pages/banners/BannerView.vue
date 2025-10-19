@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted } from 'vue';
 import BannerComponent from './components/BannerComponent.vue';
 import useBanners from '../../store/banners.pinia';
