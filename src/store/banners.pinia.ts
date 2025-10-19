@@ -2,9 +2,16 @@ import { defineStore } from "pinia";
 import { api } from "../utils/api";
 import { message } from "ant-design-vue";
 
+export interface Banner {
+  _id: number | string;
+  image: string;
+  productUrl: string;
+  createdAt: string;
+}
+
 const useBanners = defineStore("banners", {
   state: () => ({
-    banners: [],
+    banners: [] as Banner[],
     loading: false,
     buttonLoading: false,
   }),

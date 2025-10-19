@@ -1,19 +1,24 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import { message, Upload } from 'ant-design-vue'
+import type { UploadFile } from 'ant-design-vue'
 import IconImgPlus from '../../../components/icons/IconImgPlus.vue'
 import useBanners from '../../../store/banners.pinia'
-import { message, Upload } from 'ant-design-vue'
 
 const bannerStore = useBanners()
-
 const openCreateDrawer = ref(false)
 
-const bannerModel = ref({
+interface BannerModel {
+    imgList: UploadFile[]  
+    productUrl: string
+}
+
+const bannerModel = ref<BannerModel>({
     imgList: [],
     productUrl: ''
 })
 
-function beforeUpload(file) {
+function beforeUpload(file: File) {
     const isImage = file.type.startsWith('image/')
     if (!isImage) {
         message.error('Faqat rasm fayl yuklang!')
@@ -26,9 +31,15 @@ function beforeUpload(file) {
         return Upload.LIST_IGNORE
     }
 
-    file.thumbUrl = URL.createObjectURL(file)
+    const uploadFile = {
+        uid: String(Date.now()),
+        name: file.name,
+        status: 'done',
+        url: URL.createObjectURL(file),
+        originFileObj: file
+    } as UploadFile
 
-    bannerModel.value.imgList = [file]
+    bannerModel.value.imgList = [uploadFile]
     return false
 }
 
@@ -41,8 +52,13 @@ async function createBanner() {
         return message.error('Rasm yuklash majburiy!')
     }
 
+    const fileObj = bannerModel.value.imgList[0]?.originFileObj
+    if (!fileObj) {
+        return message.error('Fayl topilmadi!')
+    }
+
     const formData = new FormData()
-    formData.append('image', bannerModel.value.imgList[0])
+    formData.append('image', fileObj)
     formData.append('productUrl', bannerModel.value.productUrl)
 
     await bannerStore.createBanner(formData)
@@ -57,19 +73,18 @@ async function createBanner() {
         <a-button @click="openCreateDrawer = true" style="width: 180px;" type="primary" size="large"
             class="!flex justify-center items-center gap-2 !mb-4">
             Banner qo'shish
-            <icon-img-plus class="w-5 h-5" />
+            <IconImgPlus class="w-5 h-5" />
         </a-button>
     </div>
 
     <a-drawer :width="500" @close="openCreateDrawer = false" :open="openCreateDrawer" title="Reklama bannerini joylash">
         <a-form layout="vertical" :model="bannerModel" @finish="createBanner">
             <a-form-item label="Rasm yuklang">
-                <a-upload :rules="[{ required: true, message: 'Rasm yuklash shart !' }]" :before-upload="beforeUpload"
-                    :file-list="bannerModel.imgList" list-type="picture-card" :max-count="1" @remove="handleRemove"
-                    :show-upload-list="{ showPreviewIcon: false }">
+                <a-upload :before-upload="beforeUpload" :file-list="bannerModel.imgList" list-type="picture-card"
+                    :max-count="1" @remove="handleRemove" :show-upload-list="{ showPreviewIcon: false }">
                     <template #default>
                         <div class="!flex justify-center items-center gap-1" v-if="!bannerModel.imgList.length">
-                            <icon-img-plus class="w-6 h-6" />
+                            <IconImgPlus class="w-6 h-6" />
                             <div class="mt-1 text-gray-500 text-sm">Yuklash</div>
                         </div>
                     </template>
@@ -86,7 +101,7 @@ async function createBanner() {
                     class="!flex justify-center items-center gap-2">
                     Yaratish
                     <template #icon>
-                        <icon-img-plus class="w-5 h-5" />
+                        <IconImgPlus class="w-5 h-5" />
                     </template>
                 </a-button>
             </div>

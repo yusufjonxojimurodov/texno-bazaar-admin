@@ -1,16 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import useBanners from '../../../store/banners.pinia';
 import dayjs from 'dayjs';
 import IconDelete from '../../../components/icons/IconDelete.vue';
 
 const bannerStore = useBanners()
 
-function deleteBanner(id) {
+function deleteBanner(id: any): Promise<boolean> {
     bannerStore.deleteBanner(id)
-    return new Promise(resolve => {
-        setTimeout(() => resolve(true), 3000);
-    });
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(true), 3000)
+    })
 }
+
 </script>
 
 <template>

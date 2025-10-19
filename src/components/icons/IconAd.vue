@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
     <svg width="1em" height="1em" viewBox="0 0 50 50" version="1.2" baseProfile="tiny"
         xmlns="http://www.w3.org/2000/svg" overflow="inherit" fill="currentColor">
