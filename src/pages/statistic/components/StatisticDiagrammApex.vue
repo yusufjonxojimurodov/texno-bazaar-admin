@@ -10,11 +10,11 @@ const series = computed(() => {
 
     return [
         {
-            name: "Tashriflar (visits)",
+            name: "Saytga tashriflar",
             data: statisticStore.graphInfo.weekly.map((w) => w.visits),
         },
         {
-            name: "Foydalanuvchilar (users)",
+            name: "Ro'yxatdan o'tganlar",
             data: statisticStore.graphInfo.weekly.map((w) => w.users),
         },
     ];

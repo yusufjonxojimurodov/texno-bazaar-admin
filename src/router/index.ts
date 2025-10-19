@@ -4,6 +4,7 @@ import AppView from "../pages/AppView.vue";
 import UsersView from "../pages/users/UsersView.vue";
 import ProductsView from "../pages/products/ProductsView.vue";
 import StatisticsView from "../pages/statistic/StatisticsView.vue";
+import BannerView from "../pages/banners/BannerView.vue";
 import _404 from "../pages/_404.vue";
 
 const router = createRouter({
@@ -34,6 +35,11 @@ const router = createRouter({
           path: "statistics",
           name: "Statistics",
           component: StatisticsView,
+        },
+        {
+          path: "banners",
+          name: "Banners",
+          component: BannerView,
         },
       ],
     },

@@ -8,6 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import useUser from '../store/user.pinia';
 import useAvatar from '../store/avatar.pinia';
 import ProfileComponent from '../components/ProfileComponent.vue';
+import IconAd from '../components/icons/IconAd.vue';
 
 const router = useRouter()
 const userStore = useUser()
@@ -19,7 +20,8 @@ const selectedKeys = ref<string[]>(['1'])
 const pageTitles: Record<string, string> = {
     Users: "Foydalanuvchilar",
     Products: "Mahsulotlar",
-    Statistics: "Statistika"
+    Statistics: "Statistika",
+    Banners: "Bannerlar"
 }
 
 const currentPageTitle = computed(() => {
@@ -46,6 +48,7 @@ watch(
         if (newPath.includes('/dashboard/users')) selectedKeys.value = ['1']
         else if (newPath.includes('/dashboard/products')) selectedKeys.value = ['2']
         else if (newPath.includes('/dashboard/statistics')) selectedKeys.value = ['3']
+        else if (newPath.includes('/dashboard/banners')) selectedKeys.value = ['4']
         else selectedKeys.value = []
     }, { immediate: true })
 </script>
@@ -75,6 +78,12 @@ watch(
                     <div class="flex justify-start gap-2 items-center">
                         <icon-statistic class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Statistika</span>
+                    </div>
+                </a-menu-item>
+                <a-menu-item @click="router.push('/dashboard/banners')" class="!mt-2  shadow-sm bg-transparent" key="4">
+                    <div class="flex justify-start gap-2 items-center">
+                        <icon-ad class="w-5 h-5" />
+                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Bannerlar</span>
                     </div>
                 </a-menu-item>
             </a-menu>

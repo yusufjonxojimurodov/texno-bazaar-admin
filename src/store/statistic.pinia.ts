@@ -15,9 +15,18 @@ export interface StatisticResponse {
   weekly: WeekStat[];
 }
 
+export interface UserStats {
+  totalUsersCount: number,
+  sellerCount: number,
+  customerCount: number,
+  moderatorCount: number,
+  blockedCount: number
+}
+
 const useStatistic = defineStore("statistic", {
   state: () => ({
     graphInfo: {} as StatisticResponse,
+    usersStats: {} as UserStats,
     loading: false,
   }),
 
@@ -31,6 +40,7 @@ const useStatistic = defineStore("statistic", {
           params: { month, year },
         });
         this.graphInfo = data;
+        this.usersStats = data.usersStats
       } catch (error: any) {
         const errorMessage =
           error.response?.data?.message || "Tizimda xatolik yuz berdi";
