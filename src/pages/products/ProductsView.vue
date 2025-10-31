@@ -23,5 +23,7 @@ watch(() => route.query, () => {
 
 <template>
     <product-filter-component />
-    <products-table-component />
+    <a-card class="!bg-white">
+        <products-table-component />
+    </a-card>
 </template>

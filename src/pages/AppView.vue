@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import IconUsers from '../components/icons/IconUsers.vue';
-import IconCollapse from '../components/icons/IconCollapse.vue';
+import IconLeft from '../components/icons/IconLeft.vue';
+import IconRight from '../components/icons/IconRight.vue';
 import IconProducts from '../components/icons/IconProducts.vue';
 import IconStatistic from '../components/icons/IconStatistic.vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -9,6 +10,11 @@ import useUser from '../store/user.pinia';
 import useAvatar from '../store/avatar.pinia';
 import ProfileComponent from '../components/ProfileComponent.vue';
 import IconAd from '../components/icons/IconAd.vue';
+import IconSetting from '../components/icons/IconSetting.vue';
+import IconAccaount from '../components/icons/IconAccaount.vue';
+import IconSecurity from '../components/icons/IconSecurity.vue';
+import SettingModalComponent from '../components/modals/SettingModalComponent.vue';
+import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue';
 
 const router = useRouter()
 const userStore = useUser()
@@ -17,12 +23,24 @@ const avatarStore = useAvatar()
 
 const collapsed = ref<boolean>(false)
 const selectedKeys = ref<string[]>(['1'])
+const openSettingModal = ref<boolean>(false)
+const openPasswordModal = ref<boolean>(false)
+const windowWidth = ref(window.innerWidth)
+
 const pageTitles: Record<string, string> = {
     Users: "Foydalanuvchilar",
     Products: "Mahsulotlar",
     Statistics: "Statistika",
-    Banners: "Bannerlar"
+    Banners: "Bannerlar",
 }
+
+const mobileMenu = [
+    { key: '1', icon: IconUsers, path: '/dashboard/users' },
+    { key: '2', icon: IconProducts, path: '/dashboard/products' },
+    { key: '3', icon: IconStatistic, path: '/dashboard/statistics' },
+    { key: '4', icon: IconAd, path: '/dashboard/banners' },
+    { key: '5', icon: IconSetting, path: '', isSettings: true },
+]
 
 const currentPageTitle = computed(() => {
     const name = route.name as string
@@ -51,41 +69,82 @@ watch(
         else if (newPath.includes('/dashboard/banners')) selectedKeys.value = ['4']
         else selectedKeys.value = []
     }, { immediate: true })
+
+const onMobileMenuClick = (item: any) => {
+    if (item.isSettings) {
+        openSettingModal.value = true
+    } else {
+        router.push(item.path)
+    }
+    selectedKeys.value = [item.key]
+}
 </script>
 
 <template>
     <a-layout style="min-height: 100vh">
-        <a-layout-sider :width="240" :collapsed-width="80" class="shadow-xl" :style="sidebarDesign"
-            v-model:collapsed="collapsed" :trigger="null" collapsible>
-            <h2 v-if="!collapsed" class="text-center py-4 text-lg font-bold text-black">TexnoBazaar</h2>
-            <h2 v-else class="text-center py-4 text-lg font-bold text-black">T</h2>
+        <a-layout-sider v-if="windowWidth > 767" :width="240" :collapsed-width="80" class="shadow-xl"
+            :style="sidebarDesign" v-model:collapsed="collapsed" :trigger="null" collapsible>
+            <div v-if="!collapsed" class="py-4 flex justify-center items-center flex-col gap-1">
+                <h2 class="text-[24px] !font-bold text-[#0D2240] !p-0 !m-0">TEXNOBAZAAR</h2>
+                <p class="!m-0 !p-0 text-[#394B61] text-[12px] font-semibold">BOSHQARUV PLATFORMASI</p>
+            </div>
+            <h2 v-else class="text-center py-4 text-lg text-[24px] !font-bold text-[#0D2240]">TB</h2>
 
             <a-menu class="w-full !bg-white" mode="inline" v-model:selectedKeys="selectedKeys">
-                <a-menu-item @click="router.push('/dashboard/users')" class="!mt-2 shadow-sm bg-transparent" key="1">
+                <a-menu-item :title="!collapsed ? '' : 'Foydalanuvchilar'" @click="router.push('/dashboard/users')"
+                    class="!mt-2 shadow-sm bg-transparent" key="1">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-users class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Foydalanuvchilar</span>
                     </div>
                 </a-menu-item>
-                <a-menu-item @click="router.push('/dashboard/products')" class="!mt-2 shadow-sm bg-transparent" key="2">
+                <a-menu-item :title="!collapsed ? '' : 'Mahsulotlar'" @click="router.push('/dashboard/products')"
+                    class="!mt-2 shadow-sm bg-transparent" key="2">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-products class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Mahsulotlar</span>
                     </div>
                 </a-menu-item>
-                <a-menu-item @click="router.push('/dashboard/statistics')" class="!mt-2  shadow-sm bg-transparent"
-                    key="3">
+                <a-menu-item :title="!collapsed ? '' : 'Statistika'" @click="router.push('/dashboard/statistics')"
+                    class="!mt-2  shadow-sm bg-transparent" key="3">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-statistic class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Statistika</span>
                     </div>
                 </a-menu-item>
-                <a-menu-item @click="router.push('/dashboard/banners')" class="!mt-2  shadow-sm bg-transparent" key="4">
+                <a-menu-item :title="!collapsed ? '' : 'Bannerlar'" @click="router.push('/dashboard/banners')"
+                    class="!mt-2 shadow-sm bg-transparent" key="4">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-ad class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Bannerlar</span>
                     </div>
                 </a-menu-item>
+                <a-sub-menu class="!mt-2  shadow-sm bg-transparent" key="5">
+                    <template #title>
+                        <div class="flex justify-start gap-2 items-center">
+                            <icon-setting class="w-5 h-5" />
+                            <span class="text-[14px] !font-semibold" v-show="!collapsed">Sozlamalar</span>
+                        </div>
+                    </template>
+
+                    <div class="flex !justify-center !items-start !flex-col gap-6 !px-6 !py-4">
+                        <div @click="openSettingModal = true"
+                            class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
+                            <icon-accaount class="w-5 h-5" />
+                            <span class="text-[14px] !font-semibold">Hisob sozlamalari</span>
+                        </div>
+                        <!-- <div
+                            class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
+                            <icon-setting-platform class="w-5 h-5" />
+                            <span class="text-[14px] !font-semibold" v-show="!collapsed">Platforma sozlamalari</span>
+                        </div> -->
+                        <div @click="openPasswordModal = true"
+                            class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
+                            <icon-security class="w-5 h-5" />
+                            <span class="text-[14px] !font-semibold">Xavfsizlik sozlamalari</span>
+                        </div>
+                    </div>
+                </a-sub-menu>
             </a-menu>
         </a-layout-sider>
 
@@ -93,7 +152,9 @@ watch(
             <a-layout-header class="!bg-white flex items-center !p-2 shadow">
                 <div class="flex justify-between items-center w-full">
                     <div class="flex justify-start items-center gap-3">
-                        <icon-collapse class="cursor-pointer w-7 h-7" @click="toggleMenu" />
+                        <icon-left v-if="!collapsed && windowWidth > 768" class="cursor-pointer w-7 h-7"
+                            @click="toggleMenu" />
+                        <icon-right v-else-if="windowWidth > 768" class="cursor-pointer w-7 h-7" @click="toggleMenu" />
                         <h2 class="text-[24px] !p-0 !m-0">{{ currentPageTitle }}</h2>
                     </div>
                     <div>
@@ -102,9 +163,31 @@ watch(
                 </div>
             </a-layout-header>
 
-            <a-layout-content class="p-4">
+            <a-layout-content class="custom-content !p-4">
                 <router-view />
             </a-layout-content>
         </a-layout>
     </a-layout>
+
+    <setting-modal-component v-model:open="openSettingModal" />
+    <setting-password-modal v-model:open="openPasswordModal" />
+
+    <div
+        class="fixed bottom-0 left-0 w-full bg-white shadow-inner flex justify-around items-center py-4 md:hidden z-50">
+        <div v-for="item in mobileMenu" :key="item.key" @click="onMobileMenuClick(item)"
+            :class="['flex flex-col items-center cursor-pointer py-1', selectedKeys[0] === item.key ? 'text-blue-500' : 'text-gray-500']">
+            <component :is="item.icon" class="w-5 h-5" />
+        </div>
+    </div>
 </template>
+
+<style>
+.custom-content {
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+}
+
+.flex.flex-col.items-center.cursor-pointer.text-blue-500 {
+    font-weight: 600;
+}
+</style>

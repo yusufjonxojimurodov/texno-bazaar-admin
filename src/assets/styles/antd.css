@@ -1,18 +1,49 @@
 .ant-btn-primary {
   background-color: var(--dark-blue) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.ant-popconfirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ant-popconfirm-buttons .ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ant-menu-inline-collapsed .ant-menu-item,
+.ant-menu-inline-collapsed .ant-menu-submenu-title {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+  height: 48px !important;
 }
 
 .ant-btn-primary.ant-btn-dangerous {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
   background-color: var(--danger) !important;
 }
 
 .ant-btn[disabled],
 .ant-btn-disabled {
-  opacity: 0.7 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  opacity: 0.5 !important;
   transition: opacity 0.15s ease;
   border: none !important;
+  fill: white !important;
+  stroke: white !important;
+  color: white !important;
 }
-
 
 .ant-select-focused .ant-select-selector {
   border-color: var(--dark-blue) !important;

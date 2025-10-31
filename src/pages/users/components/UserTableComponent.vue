@@ -13,6 +13,7 @@ const userStore = useUser()
 const { setQueries } = useQueryParams()
 
 const openEditModal = ref<boolean>(false)
+const editUserData = ref<object>({})
 
 const handlePageChange = (pag: any) => {
   const page = pag.current ? pag.current - 1 : 0
@@ -20,10 +21,11 @@ const handlePageChange = (pag: any) => {
   userStore.getUsers({ page, size })
 }
 
-function openModalEdit(id: number) {
+function openModalEdit(record: any) {
   setQueries({
-    userId: id || undefined
+    userId: record.id || undefined
   })
+  editUserData.value = record
   openEditModal.value = true
 }
 
@@ -105,6 +107,11 @@ const deleteUser = (id: number) => {
           " @change="(value: string) => handleRole(record._id, value, record)" style="width: 110px;" size="middle"
           :options="filteredRoleOptions" v-model:value="record.role" />
       </template>
+      <template v-else-if="column.dataIndex === 'userName'">
+        <a-tag class="!w-full !text-[14px] !px-2 !py-1" color="volcano">
+          {{ record.userName }}
+        </a-tag>
+      </template>
 
       <template v-else-if="column.dataIndex === 'faceRegistered'">
         <a-tag style="width: 90px;" v-if="record.faceRegistered" color="success">
@@ -119,8 +126,8 @@ const deleteUser = (id: number) => {
         <a-space>
           <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
             (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-            " @click="openModalEdit(record._id)" class="!flex !justify-center items-center" type="primary"
-            size="small">
+            " @click="openModalEdit(record)" class="!rounded-full !w-7 !h-7 !flex !justify-center items-center"
+            type="primary" size="small">
             <template #icon>
               <icon-edit class="w-5 h-5" />
             </template>
@@ -130,7 +137,7 @@ const deleteUser = (id: number) => {
             " @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
             <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
               (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-              " danger type="primary" size="small" class="!flex !justify-center !items-center">
+              " danger type="primary" size="small" class="!rounded-full !w-7 !h-7 !flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />
               </template>
@@ -145,5 +152,5 @@ const deleteUser = (id: number) => {
     </template>
   </base-table>
 
-  <edit-user-modal v-model:open="openEditModal" />
+  <edit-user-modal v-model:open="openEditModal" :user="editUserData" />
 </template>

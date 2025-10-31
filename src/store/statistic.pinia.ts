@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
-import { message } from "ant-design-vue";
+import { notification } from "ant-design-vue";
 
 export interface WeekStat {
   week: number;
@@ -16,11 +16,11 @@ export interface StatisticResponse {
 }
 
 export interface UserStats {
-  totalUsersCount: number,
-  sellerCount: number,
-  customerCount: number,
-  moderatorCount: number,
-  blockedCount: number
+  totalUsersCount: number;
+  sellerCount: number;
+  customerCount: number;
+  moderatorCount: number;
+  blockedCount: number;
 }
 
 const useStatistic = defineStore("statistic", {
@@ -40,12 +40,12 @@ const useStatistic = defineStore("statistic", {
           params: { month, year },
         });
         this.graphInfo = data;
-        this.usersStats = data.usersStats
+        this.usersStats = data.usersStats;
       } catch (error: any) {
-        const errorMessage =
-          error.response?.data?.message || "Tizimda xatolik yuz berdi";
-        message.error(errorMessage);
-        console.error(error);
+        const errorMessage = error.response?.data.message || error;
+        notification.error({
+          message: errorMessage,
+        });
       } finally {
         this.loading = false;
       }

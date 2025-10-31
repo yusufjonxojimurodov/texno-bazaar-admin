@@ -1,10 +1,24 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
-import { message } from "ant-design-vue";
+import { notification } from "ant-design-vue";
+
+export interface products {
+  _id: String;
+  name: String;
+  description: String;
+  price: Number | null;
+  model: String;
+  type: String;
+  left: Number | null;
+  discount: Number | null;
+  discountPrice: Number | null;
+  createdBy: Object;
+  status: String;
+}
 
 const useProduct = defineStore("product", {
   state: () => ({
-    products: [],
+    products: [] as products[],
     totalPages: 0,
     pageSize: 10,
     totalProducts: undefined,
@@ -39,9 +53,10 @@ const useProduct = defineStore("product", {
           this.totalProducts = data.totalProducts;
         })
         .catch((error) => {
-          const errorMessage = error.response.data.message || "Tizimda xatolik";
-          message.error(errorMessage);
-          console.log(error);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.loading = false;
@@ -56,14 +71,51 @@ const useProduct = defineStore("product", {
         method: "DELETE",
       })
         .then(() => {
-          message.success("Mahsulot o'chirildi");
+          notification.success({
+            message: "Mahsulot o'chirildi",
+          });
           this.getProduct({ page: 0, size: 10 });
         })
         .catch((error) => {
-          const errorMessage =
-            error.response.data?.message || "Tizimda xatolik";
-          message.error(errorMessage);
-          console.log(error);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
+        })
+        .finally(() => {
+          this.buttonLoader = false;
+        });
+    },
+
+    async changeStatus(id: string, status: string) {
+      this.buttonLoader = true;
+
+      return api({
+        url: `/api/products/${id}/status`,
+        method: "PUT",
+        data: {
+          status: status,
+        },
+      })
+        .then(({ data }) => {
+          const updatedProduct = data?.product;
+
+          const index = this.products.findIndex((item) => item._id === id);
+          this.products[index] &&
+            (this.products[index]!.status = updatedProduct?.status || status);
+
+          notification.success({
+            message:
+              status === "ONSALE"
+                ? "Mahsulot sotuvga qo'yildi"
+                : "Mahsulot sotuvdan olib tashlandi",
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.buttonLoader = false;

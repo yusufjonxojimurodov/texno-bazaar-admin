@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
-import { message } from "ant-design-vue";
+import { notification } from "ant-design-vue";
 
 export interface Banner {
   _id: number | string;
@@ -28,10 +28,10 @@ const useBanners = defineStore("banners", {
           this.banners = data;
         })
         .catch((error) => {
-          const errorMessage =
-            error.data?.response?.message || "Tizimda xatolik";
-          message.warn(errorMessage);
-          console.error(error);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.loading = false;
@@ -47,14 +47,16 @@ const useBanners = defineStore("banners", {
         data: form,
       })
         .then(() => {
-          message.success("Yangi banner joylandi");
+          notification.success({
+            message: "Yangi reklama banneri joylashtirildi",
+          });
           this.getBanners();
         })
         .catch((error) => {
-          const errorMessage =
-            error.data?.response?.message || "Tizimda xatolik";
-          message.warn(errorMessage);
-          console.error(error);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.buttonLoading = false;
@@ -69,13 +71,16 @@ const useBanners = defineStore("banners", {
         method: "DELETE",
       })
         .then(() => {
+          notification.success({
+            message: "Reklama banneri saytdan olib tashlandi",
+          });
           this.getBanners();
         })
         .catch((error) => {
-          const errorMessage =
-            error.data?.response?.message || "Tizimda xatolik";
-          message.warn(errorMessage);
-          console.error(error);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.buttonLoading = false;

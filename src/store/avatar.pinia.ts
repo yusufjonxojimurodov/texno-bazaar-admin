@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
-import { message } from "ant-design-vue";
+import { notification } from "ant-design-vue";
 
 const useAvatar = defineStore("avatar", {
   state: () => ({
@@ -20,10 +20,10 @@ const useAvatar = defineStore("avatar", {
           this.avatar = data.avatarUrl;
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data?.message || "Tizimga xatolik";
-          message.error(errorMessage);
-          console.log(error);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.loading = false;
@@ -32,4 +32,4 @@ const useAvatar = defineStore("avatar", {
   },
 });
 
-export default useAvatar
+export default useAvatar;

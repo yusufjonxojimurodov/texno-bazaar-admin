@@ -7,9 +7,10 @@ import useBanners from '../../../store/banners.pinia'
 
 const bannerStore = useBanners()
 const openCreateDrawer = ref(false)
+const windowWidth = ref(window.innerWidth)
 
 interface BannerModel {
-    imgList: UploadFile[]  
+    imgList: UploadFile[]
     productUrl: string
 }
 
@@ -77,7 +78,8 @@ async function createBanner() {
         </a-button>
     </div>
 
-    <a-drawer :width="500" @close="openCreateDrawer = false" :open="openCreateDrawer" title="Reklama bannerini joylash">
+    <a-drawer :width="windowWidth > 768 ? '45%' : '100%'" @close="openCreateDrawer = false" :open="openCreateDrawer"
+        title="Reklama bannerini joylash">
         <a-form layout="vertical" :model="bannerModel" @finish="createBanner">
             <a-form-item label="Rasm yuklang">
                 <a-upload :before-upload="beforeUpload" :file-list="bannerModel.imgList" list-type="picture-card"
