@@ -26,6 +26,8 @@ export interface Product {
 
 const props = defineProps<{ product: Product }>()
 
+console.log(props)
+
 const statusMap: Record<'ONSALE' | 'NOTFORSALE', { color: string; text: string }> = {
     ONSALE: { color: 'success', text: "Sotuvda" },
     NOTFORSALE: { color: 'error', text: "Sotuvda emas" },
