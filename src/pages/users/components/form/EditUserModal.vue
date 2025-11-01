@@ -45,7 +45,7 @@ async function putUser() {
 
 
 <template>
-    <a-modal :footer="null" :open="open" title="Foydalanuvchini yangilash">
+    <a-modal @cancel="open = false" :footer="null" :open="open" title="Foydalanuvchini yangilash">
         <a-form @finish="putUser" layout="vertical" :model="Editmodel">
             <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" label="Ismi" name="name">
                 <a-input v-model:value="Editmodel.name" size="large" placeholder="Ismini kiriting" />

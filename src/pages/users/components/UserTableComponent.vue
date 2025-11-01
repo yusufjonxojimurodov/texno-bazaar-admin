@@ -6,7 +6,7 @@ import IconEdit from '../../../components/icons/IconEdit.vue';
 import { userColumns } from '../../../columns/user.table';
 import EditUserModal from './form/EditUserModal.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 const userStore = useUser()
 
@@ -22,21 +22,13 @@ const handlePageChange = (pag: any) => {
 }
 
 function openModalEdit(record: any) {
+  console.log(record._id)
   setQueries({
-    userId: record.id || undefined
+    userId: record._id || undefined
   })
   editUserData.value = record
   openEditModal.value = true
 }
-
-watch(openEditModal, (newValue) => {
-  if (!newValue) {
-    setQueries({
-      userId: undefined
-    })
-  }
-}, { immediate: true })
-
 
 const roleValue = ref([
   {
