@@ -1,5 +1,6 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
-import { message } from "ant-design-vue";
+import { message, notification } from "ant-design-vue";
+import router from "../../router";
 
 const instance = axios.create({
   baseURL: `${import.meta.env.VITE_APP_SERVER_URL}`,
@@ -16,7 +17,17 @@ instance.interceptors.response.use(
         status === 503 ||
         status === 429
       ) {
-        message.warn("Server bilan muammo");
+        notification.error({
+          message: "Server bilan bog'liq xatolik",
+          description: "Server bilan bog'lana olmadik yoki server xatoligi !",
+        });
+      }
+
+      if (status === 401) {
+        localStorage.removeItem("texnoBazaar");
+        setTimeout(() => {
+          router.push("/login");
+        }, 0);
       }
     }
     return Promise.reject(error);

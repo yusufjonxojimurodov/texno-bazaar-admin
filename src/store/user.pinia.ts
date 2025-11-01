@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
 import { notification } from "ant-design-vue";
-import router from "../router";
 import useHelper from "./helper.pinia";
+import router from "../router";
 
 export interface UserInfo {
   birthDate: string;
@@ -45,7 +45,7 @@ const useUser = defineStore("user", {
             notification.success({
               message: "Xush kelibsiz !",
             });
-            router.push("/dashboard/users");
+            router.push("/");
           } else {
             notification.error({
               message: "Ruxsat Berilmadi",
@@ -79,9 +79,6 @@ const useUser = defineStore("user", {
           notification.error({
             message: errorMessage,
           });
-          if (error.response?.status === 401) {
-            router.push("/");
-          }
         });
     },
 

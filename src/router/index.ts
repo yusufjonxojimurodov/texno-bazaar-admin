@@ -11,18 +11,18 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/",
+      path: "/login",
       name: "Login",
       component: AuthView,
     },
     {
-      path: "/dashboard",
+      path: "/",
       name: "Dashboard",
       component: AppView,
       meta: { requiresAuth: true },
       children: [
         {
-          path: "users",
+          path: "",
           name: "Users",
           component: UsersView,
         },
@@ -55,9 +55,9 @@ router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem("texnoBazaar");
 
   if (to.meta.requiresAuth && !token) {
-    next("/");
+    next("/login");
   } else if (to.path === "/login" && token) {
-    next("/dashboard/users");
+    next("/");
   } else {
     next();
   }

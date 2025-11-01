@@ -49,16 +49,14 @@ function viewProduct(id: String) {
     <a-drawer :open="open" :width="windowWidth > 768 ? '45%' : '100%'" @close="open = false"
         title="Mahsulot ma'lumotlari" class="product-drawer">
         <a-card class="shadow-md rounded-2xl !bg-white">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-1">{{ product.name }}</h2>
-                    <div class="flex justify-start items-center gap-1">
-                        <p class="text-gray-500 text-sm !p-0 !m-0">Model: <span class="font-medium">{{ product.model
-                        }}</span></p>
-                        <span @click="copyUser(product._id, 'product')"
-                            class="font-mono text-gray-500 !px-2 rounded-[10px] transition cursor-pointer duration-150 hover:bg-gray-200">ID:{{
-                                product._id }}</span>
-                    </div>
+            <div class="flex justify-between items-start mb-4">
+                <div class="!w-full md:!w-[150px]">
+                    <h2 class="text-2xl font-bold text-gray-800 !mb-1">{{ product.name }}</h2>
+                    <p class="text-gray-500 text-sm !p-0 !m-0">Model: <span class="font-medium">{{ product.model
+                    }}</span></p>
+                    <span @click="copyUser(product._id, 'product')"
+                        class="font-mono text-gray-500 rounded-[10px] transition cursor-pointer duration-150 hover:bg-gray-200">ID:{{
+                            product._id }}</span>
                 </div>
                 <a-tag class="!text-[15px] !px-4 !py-1" :color="statusMap[product.status].color">
                     {{ statusMap[product.status].text }}
@@ -102,8 +100,8 @@ function viewProduct(id: String) {
 
             <div class="flex items-start justify-between">
                 <div>
-                    <span class="block text-gray-500 text-sm mb-1">Mahsulot egasi</span>
-                    <a-tag color="blue" class="!text-[14px] !px-4 !py-2 font-medium">
+                    <span class="block text-gray-500 text-sm !m-0 !p-0">Mahsulot egasi</span>
+                    <a-tag color="blue" class="!text-[10px] !px-2 !py-0 md:!text-[14px] md:!px-4 md:!py-2 font-medium">
                         {{ product.createdBy.userName }}
                     </a-tag>
                 </div>
@@ -111,12 +109,13 @@ function viewProduct(id: String) {
                 <div class="flex justify-center items-end gap-1 flex-col">
                     <div @click="copyUser(product.createdBy._id, 'seller')">
                         <span
-                            class="font-mono text-gray-500 !px-2 !py-[4px] rounded-[10px] transition cursor-pointer duration-150 hover:bg-gray-200">ID:{{
+                            class="font-mono text-gray-500 text-[12px] md:text-[14px] md:!px-2 md:!py-[4px] rounded-[10px] transition cursor-pointer duration-150 hover:bg-gray-200">ID:{{
                                 product.createdBy._id }}</span>
                     </div>
-                    <a-button @click="viewProduct(product._id)" type="primary" size="middle">
+                    <a-button @click="viewProduct(product._id)" type="primary"
+                        :size="windowWidth > 768 ? 'middle' : 'small'">
                         <template #icon>
-                            <icon-eye class="w-5 h-5" />
+                            <icon-eye class="w-4 h-4 md:w-5 md:h-5" />
                         </template>
                     </a-button>
                 </div>

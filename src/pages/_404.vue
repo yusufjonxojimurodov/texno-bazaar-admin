@@ -19,9 +19,11 @@ function goHome() {
             Bunday sahifa topilmadi
         </template>
         <template #extra>
-            <a-button @click="goHome" type="primary" size="large">
-                Bosh sahifaga qaytish
-            </a-button>
+            <div class="!flex justify-center items-center">
+                <a-button @click="goHome" type="primary" size="large">
+                    Bosh sahifaga qaytish
+                </a-button>
+            </div>
         </template>
     </a-result>
 </template>

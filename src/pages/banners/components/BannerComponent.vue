@@ -16,10 +16,10 @@ function deleteBanner(id: any): Promise<boolean> {
 
 <template>
     <div class="!flex justify-start items-center gap-3 flex-wrap">
-        <a-card v-for="banner in bannerStore.banners" :key="banner._id" class="bg-white w-[350px] !rounded-[10px]">
-            <a-image
-                style="width: 300px; height: 200px; object-fit: cover; object-position: center; border-radius: 10px;"
-                :src="banner.image" />
+        <a-card v-for="banner in bannerStore.banners" :key="banner._id"
+            class="bg-white !w-full md:!w-[350px] !rounded-[10px]">
+            <a-image class="!w-full md:!w-[300px] md:!h-[200px]"
+                style="object-fit: cover; object-position: center; border-radius: 10px;" :src="banner.image" />
 
             <div class="flex justify-center items-start flex-col gap-3 mt-2">
                 <p class="!m-0 !p-0 text-gray-700 !font-medium">Yaratilgan vaqti: {{

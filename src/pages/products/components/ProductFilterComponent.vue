@@ -54,12 +54,12 @@ function filterModel(value: string) {
 </script>
 
 <template>
-    <div class="flex justify-end items-center gap-3 !mb-3">
-        <a-input v-model:value="searchInput" @input="handleSearch" style="width: 180px;" size="large"
+    <div class="flex justify-end items-center gap-3 !mb-3 flex-wrap">
+        <a-input v-model:value="searchInput" @input="handleSearch" class="!w-[48%] md:!w-[180px]" size="large"
             placeholder="Qidirish..." />
-        <a-select v-model:value="valueType" @change="filterType" allow-clear style="width: 180px;" :options="types"
-            size="large" placeholder="Turini tanlang" />
-        <a-select v-model:value="valueModel" @change="filterModel" allow-clear style="width: 180px;" :options="models"
-            size="large" placeholder="Modelni tanlang" />
+        <a-select v-model:value="valueType" @change="filterType" allow-clear class="!w-[48%] md:!w-[180px]"
+            :options="types" size="large" placeholder="Turini tanlang" />
+        <a-select v-model:value="valueModel" @change="filterModel" allow-clear class="!w-full md:!w-[180px]"
+            :options="models" size="large" placeholder="Modelni tanlang" />
     </div>
 </template>
