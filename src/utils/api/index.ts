@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
-import { message, notification } from "ant-design-vue";
+import { notification } from "ant-design-vue";
 import router from "../../router";
 
 const instance = axios.create({

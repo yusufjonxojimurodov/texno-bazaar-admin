@@ -28,7 +28,6 @@ const openSettingModal = ref<boolean>(false)
 const openPasswordModal = ref<boolean>(false)
 const openMenuMobil = ref<boolean>(false)
 const selectedKeys = ref<string[]>(['1'])
-const windowWidth = ref(window.innerWidth)
 
 const pageTitles: Record<string, string> = {
     Users: "Foydalanuvchilar",
