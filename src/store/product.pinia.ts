@@ -63,6 +63,40 @@ const useProduct = defineStore("product", {
         });
     },
 
+    async updateProduct(form: object, id: string | number, callback: Function) {
+      this.buttonLoader = true;
+
+      return api({
+        url: `/api/products/update/product/admin/${id}`,
+        method: "PUT",
+        data: form,
+      })
+        .then(({ data }) => {
+          const updatedProduct = this.products.findIndex((p) => p._id === id);
+          if (updatedProduct !== -1) {
+            this.products[updatedProduct] = {
+              ...this.products[updatedProduct],
+              ...data.product,
+            };
+          }
+
+          notification.success({
+            message: "Mahsulot yangilandi",
+          });
+
+          callback?.();
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
+        })
+        .finally(() => {
+          this.buttonLoader = false;
+        });
+    },
+
     deleteProduct(id: number) {
       this.buttonLoader = true;
 

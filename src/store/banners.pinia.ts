@@ -5,6 +5,7 @@ import { notification } from "ant-design-vue";
 export interface Banner {
   _id: number | string;
   image: string;
+  status: string;
   productUrl: string;
   createdAt: string;
 }
@@ -21,7 +22,7 @@ const useBanners = defineStore("banners", {
       this.loading = true;
 
       api({
-        url: "/api/banner",
+        url: "/api/banner/admin",
         method: "GET",
       })
         .then(({ data }) => {
@@ -57,6 +58,33 @@ const useBanners = defineStore("banners", {
           notification.error({
             message: errorMessage,
           });
+        })
+        .finally(() => {
+          this.buttonLoading = false;
+        });
+    },
+
+    async updateStatus(status: { status: string }, id: string | number) {
+      this.buttonLoading = true;
+
+      return api({
+        url: `/api/banner/update/status/banner/${id}`,
+        method: "PUT",
+        data: status,
+      })
+        .then(({ data }) => {
+          const banner = this.banners.find((b) => b._id === id);
+          if (banner) {
+            banner.status = data.status;
+          }
+
+          notification.success({
+            message: "Banner holati yangilandi",
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({ message: errorMessage });
         })
         .finally(() => {
           this.buttonLoading = false;

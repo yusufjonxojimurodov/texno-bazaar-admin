@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import useBanners from '../../../store/banners.pinia';
 import dayjs from 'dayjs';
 import IconDelete from '../../../components/icons/IconDelete.vue';
+import IconCheck from '../../../components/icons/IconCheck.vue';
+import IconCancel from '../../../components/icons/IconCancel.vue';
+
 
 const bannerStore = useBanners()
+
+const loadingMap = reactive<{ [key: string]: boolean }>({})
 
 function deleteBanner(id: any): Promise<boolean> {
     bannerStore.deleteBanner(id)
@@ -12,6 +18,19 @@ function deleteBanner(id: any): Promise<boolean> {
     })
 }
 
+async function changeStatus(id: string | number, status: string) {
+    const newStatus = status === 'ACTIVE' ? 'IN_ACTIVE' : 'ACTIVE'
+    const statusBanner = {
+        status: newStatus
+    }
+
+    loadingMap[id] = true
+    try {
+        await bannerStore.updateStatus(statusBanner, id)
+    } finally {
+        loadingMap[id] = false
+    }
+}
 </script>
 
 <template>
@@ -26,11 +45,24 @@ function deleteBanner(id: any): Promise<boolean> {
                     dayjs(banner.createdAt).format("DD.MM.YYYY HH:mm") }}</p>
                 <div class="flex justify-between items-center w-full">
                     <a class="text-[16px]" target="_blank" :href="banner.productUrl">Mahsulotni ko'rish</a>
-                    <a-popconfirm @confirm="deleteBanner(banner._id)" title="O'chirishga rozimisiz ?">
-                        <a-button type="primary" danger size="small">
-                            <icon-delete class="w-5 h-5" />
+                    <div class="flex justify-end items-end gap-2">
+                        <a-button :loading="loadingMap[banner._id]" @click="changeStatus(banner._id, banner.status)"
+                            type="primary" size="small"
+                            :class="banner.status === 'ACTIVE' ? '!bg-[#2ead00]' : '!bg-[#ff0000]'"
+                            class="!flex !w-7 !h-7 !rounded-full !justify-center !bg-none hover:!bg-none !items-center">
+                            <template #icon>
+                                <component :is="banner.status === 'ACTIVE' ? IconCheck : IconCancel" class="w-5 h-5" />
+                            </template>
                         </a-button>
-                    </a-popconfirm>
+                        <a-popconfirm @confirm="deleteBanner(banner._id)" title="O'chirishga rozimisiz ?">
+                            <a-button danger type="primary" size="small"
+                                class="!flex !rounded-full !justify-center !items-center !w-7 !h-7">
+                                <template #icon>
+                                    <icon-delete class="w-5 h-5" />
+                                </template>
+                            </a-button>
+                        </a-popconfirm>
+                    </div>
                 </div>
             </div>
         </a-card>
