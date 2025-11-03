@@ -108,6 +108,36 @@ const useUser = defineStore("user", {
         });
     },
 
+    updateModeratorPermission(
+      id: string | number,
+      permission: object,
+      callback: Function
+    ) {
+      this.buttonLoader = true;
+
+      api({
+        url: `/api/users/permissions/moderator/${id}`,
+        method: "PUT",
+        data: permission,
+      })
+        .then(() => {
+          notification.success({
+            message: "Moderator huquqlari o'zgartirildi",
+          });
+
+          callback?.();
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
+        })
+        .finally(() => {
+          this.buttonLoader = false;
+        });
+    },
+
     updatePassword(password: Object, callback: Function) {
       this.buttonLoader = true;
 

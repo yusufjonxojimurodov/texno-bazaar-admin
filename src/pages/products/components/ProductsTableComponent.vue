@@ -103,13 +103,13 @@ function openDrawer(record: any) {
                     <a-button :loading="loadingMap[record._id]" @click="changeStatus(record._id, record.status)"
                         type="primary" size="small"
                         :class="record.status === 'ONSALE' ? '!bg-[#2ead00]' : '!bg-[#ff0000]'"
-                        class="!flex !w-7 !h-7 !rounded-full !justify-center !bg-none hover:!bg-none !items-center">
+                        class="!flex !w-8 !h-8 !rounded-full !justify-center !bg-none hover:!bg-none !items-center">
                         <template #icon>
                             <component :is="record.status === 'ONSALE' ? IconCheck : IconCancel" class="w-5 h-5" />
                         </template>
                     </a-button>
                     <a-button @click="openDrawer(record)" type="primary" size="small"
-                        class="!flex !justify-center !items-center !rounded-full !w-7 !h-7">
+                        class="!flex !justify-center !items-center !rounded-full !w-8 !h-8">
                         <template #icon>
                             <icon-info class="w-8 h-8" />
                         </template>
@@ -117,7 +117,7 @@ function openDrawer(record: any) {
                     <a-popconfirm :disabled="record.role === 'admin'" @confirm="deleteProduct(record._id)" ok-text="Ha"
                         cancel-text="Yo'q" title="O'chirishga rozimisiz?">
                         <a-button :disabled="record.role === 'admin'" danger type="primary" size="small"
-                            class="!flex !rounded-full !justify-center !items-center !w-7 !h-7">
+                            class="!flex !rounded-full !justify-center !items-center !w-8 !h-8">
                             <template #icon>
                                 <icon-delete class="w-5 h-5" />
                             </template>

@@ -11,7 +11,7 @@ const route = useRoute()
 const { getQueries } = useQueryParams()
 
 watch(() => route.query, () => {
-    if (!route.query.userId) {
+    if (!route.query.userId && !route.query.id) {
         userStore.getUsers({
             search: getQueries("search") || undefined,
             role: getQueries("role") || undefined

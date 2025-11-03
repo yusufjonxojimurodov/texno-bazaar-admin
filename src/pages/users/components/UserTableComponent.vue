@@ -10,6 +10,8 @@ import { computed, ref } from 'vue';
 import UserInfoDrawer from './UserInfoDrawer.vue';
 import type { User } from './UserInfoDrawer.vue';
 import IconInfo from '../../../components/icons/IconInfo.vue';
+import IconPermisson from '../../../components/icons/IconPermisson.vue';
+import SettingPermissionModalComponent from '../../../components/modals/SettingPermissionModalComponent.vue';
 
 const userStore = useUser()
 
@@ -31,6 +33,8 @@ const userInfo = ref<User>({
   rating: 0,
 })
 const infodrawer = ref<boolean>(false)
+const openSettingPermissionModal = ref<boolean>(false)
+const permissions = ref({})
 
 const handlePageChange = (pag: any) => {
   const page = pag.current ? pag.current - 1 : 0
@@ -99,6 +103,14 @@ function openInfoDrawer(record: any) {
   infodrawer.value = true
   userInfo.value = record
 }
+
+function openPermissionSettingModal(record: any) {
+  setQueries({
+    id: record._id || undefined
+  })
+  permissions.value = record.permission
+  openSettingPermissionModal.value = true
+}
 </script>
 
 <template>
@@ -140,16 +152,22 @@ function openInfoDrawer(record: any) {
         <a-space>
           <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
             (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-            " @click="openModalEdit(record)" class="!rounded-full !w-7 !h-7 !flex !justify-center items-center"
+            " @click="openModalEdit(record)" class="!rounded-full !w-8 !h-8 !flex !justify-center items-center"
             type="primary" size="small">
             <template #icon>
               <icon-edit class="w-5 h-5" />
             </template>
           </a-button>
-          <a-button @click="openInfoDrawer(record)" class="!rounded-full !w-7 !h-7 !flex !justify-center items-center"
+          <a-button @click="openInfoDrawer(record)" class="!rounded-full !w-8 !h-8 !flex !justify-center items-center"
             type="primary" size="small">
             <template #icon>
               <icon-info class="w-8 h-8" />
+            </template>
+          </a-button>
+          <a-button :disabled="record.role !== 'moderator'" @click="openPermissionSettingModal(record)"
+            class="!rounded-full !w-8 !h-8 !flex !justify-center items-center" type="primary" size="small">
+            <template #icon>
+              <icon-permisson class="w-5 h-5" />
             </template>
           </a-button>
           <a-popconfirm :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
@@ -157,7 +175,7 @@ function openInfoDrawer(record: any) {
             " @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
             <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
               (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-              " danger type="primary" size="small" class="!rounded-full !w-7 !h-7 !flex !justify-center !items-center">
+              " danger type="primary" size="small" class="!rounded-full !w-8 !h-8 !flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />
               </template>
@@ -174,4 +192,5 @@ function openInfoDrawer(record: any) {
 
   <edit-user-modal v-model:open="openEditModal" :user="editUserData" />
   <user-info-drawer v-model:open="infodrawer" :user="userInfo" />
+  <setting-permission-modal-component :permissions="permissions" v-model:open="openSettingPermissionModal" />
 </template>
