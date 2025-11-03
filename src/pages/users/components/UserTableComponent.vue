@@ -6,58 +6,72 @@ import IconEdit from '../../../components/icons/IconEdit.vue';
 import { userColumns } from '../../../columns/user.table';
 import EditUserModal from './form/EditUserModal.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import UserInfoDrawer from './UserInfoDrawer.vue';
+import type { User } from './UserInfoDrawer.vue';
+import IconInfo from '../../../components/icons/IconInfo.vue';
+import IconPermissions from '../../../components/icons/IconPermissions.vue';
+import SettingModalPermissions from '../../../components/modals/SettingModalPermissions.vue';
 
 const userStore = useUser()
 const { setQueries } = useQueryParams()
 
 const openEditModal = ref<boolean>(false)
+const editUserData = ref<object>({})
+
+// ✅ Permission modal uchun boolean va tanlangan user
+const editUserPremissions = ref<boolean>(false)
+const selectedUserForPermissions = ref<object>({})
+
+const userInfo = ref<User>({
+  name: "",
+  surname: "",
+  avatarUrl: "",
+  role: "",
+  userName: "",
+  phone: 0,
+  email: "",
+  birthDate: "",
+  chatId: 0,
+  points: 0,
+  rating: 0,
+})
+const infodrawer = ref<boolean>(false)
 
 const handlePageChange = (pag: any) => {
   const page = pag.current ? pag.current - 1 : 0
   const size = pag.pageSize || 0
-  userStore.getUsers(page, size)
+  userStore.getUsers({ page, size })
 }
 
-function openModalEdit(id: number) {
+function openModalEdit(record: any) {
+  console.log(record._id)
   setQueries({
-    userId: id || undefined
+    userId: record._id || undefined
   })
+  editUserData.value = record
   openEditModal.value = true
 }
 
 const roleValue = ref([
-  {
-    label: "Sotuvchi",
-    value: "seller"
-  },
-  {
-    label: "Admin",
-    value: "admin"
-  },
-  {
-    label: "Mijoz",
-    value: "customer"
-  },
-  {
-    label: "Bloklangan",
-    value: "blocked"
-  }
+  { label: "Sotuvchi", value: "seller" },
+  { label: "Mijoz", value: "customer" },
+  { label: "Moderator", value: "moderator" },
+  { label: "Bloklangan", value: "blocked" }
 ])
+
+const filteredRoleOptions = computed(() => {
+  if (userStore.user.role === "moderator") {
+    return roleValue.value.filter(opt => opt.value !== "moderator")
+  }
+  return roleValue.value
+})
 
 async function handleRole(id: number, newRole: string, record: any) {
   const oldRole = record.role
-
   record.loading = true
-
   try {
-    const res = await userStore.putRole({ role: newRole, id })
-
-    if (res?.status === 200) {
-      record.role = newRole
-    } else {
-      record.role = oldRole
-    }
+    await userStore.putRole({ role: newRole, id })
   } catch (err) {
     record.role = oldRole
   } finally {
@@ -65,13 +79,24 @@ async function handleRole(id: number, newRole: string, record: any) {
   }
 }
 
-
-const deleteUser = (id:number) => {
+const deleteUser = (id: number) => {
   userStore.deleteUser(id)
   return new Promise(resolve => {
     setTimeout(() => resolve(true), 3000);
   });
 };
+
+function openInfoDrawer(record: any) {
+  infodrawer.value = true
+  userInfo.value = record
+}
+
+// ✅ Permissions modal ochish funksiyasi
+function openPermissionsModal(record: any) {
+  selectedUserForPermissions.value = record
+  editUserPremissions.value = true
+}
+
 </script>
 
 <template>
@@ -89,21 +114,55 @@ const deleteUser = (id:number) => {
       </template>
 
       <template v-else-if="column.dataIndex === 'role'">
-        <a-select :loading="record.loading" :disabled="record.role === 'admin'" @change="(value: string) => handleRole(record._id, value, record)"
-          style="width: 110px;" size="middle" :options="roleValue" v-model:value="record.role" />
+        <a-select :loading="record.loading" :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+          (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+          " @change="(value: string) => handleRole(record._id, value, record)" style="width: 110px;" size="middle"
+          :options="filteredRoleOptions" v-model:value="record.role" />
+      </template>
+      <template v-else-if="column.dataIndex === 'userName'">
+        <a-tag class="!w-full !text-[14px] !px-2 !py-1" color="volcano">
+          {{ record.userName }}
+        </a-tag>
+      </template>
+
+      <template v-else-if="column.dataIndex === 'faceRegistered'">
+        <a-tag style="width: 90px;" v-if="record.faceRegistered" color="success">
+          O'rnatilgan
+        </a-tag>
+        <a-tag style="width: 90px;" size="large" v-else color="error">
+          O'rnatilmagan
+        </a-tag>
       </template>
 
       <template v-else-if="column.dataIndex === 'actions'">
         <a-space>
-          <a-button @click="openModalEdit(record._id)" class="!flex !justify-center items-center" type="primary"
-            size="middle">
+          <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+            (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+            " @click="openModalEdit(record)" class="!rounded-full !w-7 !h-7 !flex !justify-center items-center"
+            type="primary" size="small">
             <template #icon>
               <icon-edit class="w-5 h-5" />
             </template>
           </a-button>
-          <a-popconfirm @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q"
-            title="O'chirishga rozimisiz?">
-            <a-button danger type="primary" size="middle" class="!flex !justify-center !items-center">
+          <a-button @click="openInfoDrawer(record)" class="!rounded-full !w-7 !h-7 !flex !justify-center items-center"
+            type="primary" size="small">
+            <template #icon>
+              <icon-info class="w-8 h-8" />
+            </template>
+          </a-button>
+          <!-- ✅ Permissions button -->
+          <a-button @click="() => openPermissionsModal(record)" class="!rounded-full !bg-white !w-7 !h-7 !flex !justify-center items-center"
+            type="primary" size="small">
+            <template #icon>
+              <IconPermissions class="w-8 h-8" />
+            </template>
+          </a-button>
+          <a-popconfirm :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+            (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+            " @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
+            <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
+              (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
+              " danger type="primary" size="small" class="!rounded-full !w-7 !h-7 !flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />
               </template>
@@ -118,5 +177,8 @@ const deleteUser = (id:number) => {
     </template>
   </base-table>
 
-  <edit-user-modal v-model:open="openEditModal" />
+  <edit-user-modal v-model:open="openEditModal" :user="editUserData" />
+  <user-info-drawer v-model:open="infodrawer" :user="userInfo" />
+  <!-- ✅ Permissions modal -->
+  <setting-modal-permissions v-model:open="editUserPremissions" :user="selectedUserForPermissions"/>
 </template>

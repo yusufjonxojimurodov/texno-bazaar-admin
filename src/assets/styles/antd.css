@@ -1,0 +1,75 @@
+.ant-btn-primary {
+  background-color: var(--dark-blue) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.ant-popconfirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ant-popconfirm-buttons .ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ant-menu-inline-collapsed .ant-menu-item,
+.ant-menu-inline-collapsed .ant-menu-submenu-title {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+  height: 48px !important;
+}
+
+.ant-btn-primary.ant-btn-dangerous {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background-color: var(--danger) !important;
+}
+
+.ant-btn[disabled],
+.ant-btn-disabled {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  opacity: 0.5 !important;
+  transition: opacity 0.15s ease;
+  border: none !important;
+  fill: white !important;
+  stroke: white !important;
+  color: white !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: var(--dark-blue) !important;
+  box-shadow: 0 0 0 2px rgba(0, 100, 255, 0.3) !important;
+}
+
+.ant-select:hover .ant-select-selector {
+  border-color: var(--dark-blue) !important;
+}
+
+.ant-input {
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--dark-blue) !important;
+  }
+
+  &:focus {
+    border-color: var(--dark-blue) !important;
+    box-shadow: 0 0 0 2px rgba(0, 100, 255, 0.25) !important;
+  }
+}
+
+.ant-input-affix-wrapper-focused,
+.ant-input-textarea:focus,
+.ant-input-textarea-focused {
+  border-color: var(--dark-blue) !important;
+  box-shadow: 0 0 0 2px rgba(0, 100, 255, 0.25) !important;
+}

@@ -1,23 +1,37 @@
-import {useRoute, useRouter} from 'vue-router'
+import { useRoute, useRouter, type LocationQueryRaw } from "vue-router";
 
 export function useQueryParams() {
-    const route = useRoute()
-    const router = useRouter()
+  const route = useRoute();
+  const router = useRouter();
 
-    const getQueries = (prop) => {
-        const queries = {...route?.query}
-        queries.page = route.query?.page ? +route.query?.page - 1 : 0
-        queries.size = route.query?.size ? +route.query?.size : 10
+  const getQueries = (prop?: string): any => {
+    const queries: Record<string, any> = { ...route.query };
 
-        return prop ? queries[prop] : queries
-    }
-    const setQueries = async ({...props}, clear = false) => {
-        await router.push({
-            query: clear || Object.assign({...route?.query}, props)
-        })
-    }
-    return {
-        getQueries,
-        setQueries
-    }
+    queries.page = route.query.page ? Number(route.query.page) - 1 : 0;
+    queries.size = route.query.size ? Number(route.query.size) : 10;
+
+    return prop ? queries[prop] : queries;
+  };
+
+  const setQueries = async (
+    props: Record<string, any>,
+    clear = false
+  ): Promise<void> => {
+    const currentQuery = clear ? {} : { ...route.query };
+
+    const merged: LocationQueryRaw = {};
+
+    Object.entries({ ...currentQuery, ...props }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        merged[key] = String(value);
+      }
+    });
+
+    await router.push({ query: merged });
+  };
+
+  return {
+    getQueries,
+    setQueries,
+  };
 }

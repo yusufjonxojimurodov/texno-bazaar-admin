@@ -1,11 +1,25 @@
 import { defineStore } from "pinia";
 import { api } from "../utils/api";
-import { message } from "ant-design-vue";
+import { notification } from "ant-design-vue";
+import useHelper from "./helper.pinia";
 import router from "../router";
+
+export interface UserInfo {
+  birthDate: string;
+  chatId: number;
+  email: string;
+  faceRegistered: boolean;
+  name: string;
+  phone: string;
+  role: string;
+  surname: string;
+  userName: string;
+  _id: string;
+}
 
 const useUser = defineStore("user", {
   state: () => ({
-    user: "",
+    user: {} as UserInfo,
     allUsers: [],
     currentPage: 0,
     pageSize: 10,
@@ -17,6 +31,7 @@ const useUser = defineStore("user", {
   actions: {
     login(form: object) {
       this.loading = true;
+      const helperStore = useHelper();
 
       api({
         url: "/api/users/login",
@@ -24,14 +39,27 @@ const useUser = defineStore("user", {
         data: form,
       })
         .then(({ data }) => {
-          localStorage.setItem("texnoBazaar", data.token);
-          message.success("Tizimga kirdingiz");
-          router.push("/dashboard/users");
+          if (data.role === "admin" || data.role === "moderator") {
+            localStorage.setItem("texnoBazaar", data.token);
+            helperStore.token = data.token;
+            notification.success({
+              message: "Xush kelibsiz !",
+            });
+            router.push("/");
+          } else {
+            notification.error({
+              message: "Ruxsat Berilmadi",
+              description:
+                "Siz bu platformaga kirishingiz uchun TexnoBazaar admini bo'lishingiz kerak !",
+            });
+            return;
+          }
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
-          message.error(errorMessage);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.loading = false;
@@ -39,8 +67,6 @@ const useUser = defineStore("user", {
     },
 
     getMe() {
-      this.loading = true;
-
       api({
         url: "/api/users/getUserMe",
         method: "GET",
@@ -49,16 +75,65 @@ const useUser = defineStore("user", {
           this.user = data;
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
-          message.error(errorMessage);
-        })
-        .finally(() => {
-          this.loading = false;
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         });
     },
 
-    getUsers(page = 0, size = 10) {
+    updateMe(form: any, callback: Function) {
+      this.buttonLoader = true;
+
+      api({
+        url: `/api/users/update-profile`,
+        method: "PUT",
+        data: form,
+      })
+        .then(() => {
+          this.getMe();
+          notification.success({
+            message: "Ma'lumotlaringiz yangilandi",
+          });
+          callback?.();
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
+        })
+        .finally(() => {
+          this.buttonLoader = false;
+        });
+    },
+
+    updatePassword(password: Object, callback: Function) {
+      this.buttonLoader = true;
+
+      api({
+        url: "/api/users/update-profile",
+        method: "PUT",
+        data: password,
+      })
+        .then(() => {
+          notification.success({
+            message: "Parol yangilandi",
+          });
+          callback?.();
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
+        })
+        .finally(() => {
+          this.buttonLoader = false;
+        });
+    },
+
+    getUsers({ page = 0, size = 10, search = undefined, role = undefined }) {
       this.loading = true;
 
       api({
@@ -67,6 +142,8 @@ const useUser = defineStore("user", {
         params: {
           page,
           size,
+          search,
+          role,
         },
       })
         .then(({ data }) => {
@@ -76,9 +153,10 @@ const useUser = defineStore("user", {
           this.pageSize = size;
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
-          message.error(errorMessage);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.loading = false;
@@ -94,13 +172,15 @@ const useUser = defineStore("user", {
         data: form,
       })
         .then(() => {
-          message.success("Foydalanuvchi yangilandi");
-          this.getUsers();
+          notification.success({
+            message: "Foydalanuvchi ma'lumotlari yangilandi",
+          });
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data.message || "Tizimda xatolik";
-          message.error(errorMessage);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.buttonLoader = false;
@@ -116,13 +196,16 @@ const useUser = defineStore("user", {
         data: { role },
       })
         .then(() => {
-          message.success("Rol ozgartirildi");
-          this.getUsers();
+          notification.success({
+            message: "Foydalanuvchi darajasi o'zgartirildi",
+          });
+          this.getUsers({ page: 0 });
         })
         .catch((error) => {
-          const errorMessage =
-            error.response?.data?.message || "Tizimda xatolik";
-          message.error(errorMessage);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.buttonLoader = false;
@@ -136,12 +219,16 @@ const useUser = defineStore("user", {
         method: "DELETE",
       })
         .then(() => {
-          message.success("Foydalanuvchi o'chirildi");
-          this.getUsers();
+          notification.success({
+            message: "Foydalanuvchi ma'lumotlari o'chirildi",
+          });
+          this.getUsers({ page: 0 });
         })
         .catch((error) => {
-          const errorMessage = error.response?.data.message;
-          message.error(errorMessage);
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
         })
         .finally(() => {
           this.buttonLoader = false;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { TablePaginationConfig } from 'ant-design-vue'
+import type { TablePaginationConfig } from 'ant-design-vue'
 
 const props = defineProps({
     data: {
@@ -50,10 +50,10 @@ const handleTableChange = (pag: TablePaginationConfig) => {
 </script>
 
 <template>
-    <a-table :data-source="props.data" :columns="props.columns" :loading="props.loading" :pagination="pagination"
-        @change="handleTableChange" bordered>
+    <a-table :scroll="{ x: 'max-content' }" :data-source="props.data" :columns="props.columns" :loading="props.loading"
+        :pagination="pagination" @change="handleTableChange" bordered>
         <template #bodyCell="{ column, record, index }">
-            <slot name="bodyCell" :column="column" :record="record" :index="index"/>
+            <slot name="bodyCell" :column="column" :record="record" :index="index" />
         </template>
     </a-table>
 </template>
