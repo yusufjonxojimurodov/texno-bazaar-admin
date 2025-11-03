@@ -17,6 +17,7 @@ const Editmodel = ref({
     name: "",
     surname: "",
     phone: "",
+    email: "",
     userName: "",
     password: ""
 });
@@ -30,6 +31,7 @@ watch(
                 surname: newUser.surname || "",
                 phone: newUser.phone || "",
                 userName: newUser.userName || "",
+                email: newUser.email,
                 password: ""
             };
         }
@@ -62,6 +64,9 @@ async function putUser() {
             </a-form-item>
             <a-form-item label="Paroli" name="password">
                 <a-input v-model:value="Editmodel.password" size="large" placeholder="Parolini kiriting" />
+            </a-form-item>
+            <a-form-item label="Email manzil" name="email">
+                <a-input v-model:value="Editmodel.email" size="large" placeholder="Email manzilini kiriting" />
             </a-form-item>
 
             <div class="flex justify-end items-center gap-2 !mt-2">

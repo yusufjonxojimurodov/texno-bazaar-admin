@@ -154,8 +154,8 @@ watch(
                 <router-view />
             </a-layout-content>
         </a-layout>
-        <p class="absolute bottom-2 left-18 hidden  md:block !font-semibold text-gray-500">Version 1.0.8</p>
     </a-layout>
+    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.9</p>
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />

@@ -7,6 +7,9 @@ import { userColumns } from '../../../columns/user.table';
 import EditUserModal from './form/EditUserModal.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 import { computed, ref } from 'vue';
+import UserInfoDrawer from './UserInfoDrawer.vue';
+import type { User } from './UserInfoDrawer.vue';
+import IconInfo from '../../../components/icons/IconInfo.vue';
 
 const userStore = useUser()
 
@@ -14,6 +17,20 @@ const { setQueries } = useQueryParams()
 
 const openEditModal = ref<boolean>(false)
 const editUserData = ref<object>({})
+const userInfo = ref<User>({
+  name: "",
+  surname: "",
+  avatarUrl: "",
+  role: "",
+  userName: "",
+  phone: 0,
+  email: "",
+  birthDate: "",
+  chatId: 0,
+  points: 0,
+  rating: 0,
+})
+const infodrawer = ref<boolean>(false)
 
 const handlePageChange = (pag: any) => {
   const page = pag.current ? pag.current - 1 : 0
@@ -77,6 +94,11 @@ const deleteUser = (id: number) => {
     setTimeout(() => resolve(true), 3000);
   });
 };
+
+function openInfoDrawer(record: any) {
+  infodrawer.value = true
+  userInfo.value = record
+}
 </script>
 
 <template>
@@ -124,6 +146,12 @@ const deleteUser = (id: number) => {
               <icon-edit class="w-5 h-5" />
             </template>
           </a-button>
+          <a-button @click="openInfoDrawer(record)" class="!rounded-full !w-7 !h-7 !flex !justify-center items-center"
+            type="primary" size="small">
+            <template #icon>
+              <icon-info class="w-8 h-8" />
+            </template>
+          </a-button>
           <a-popconfirm :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
             (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
             " @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
@@ -145,4 +173,5 @@ const deleteUser = (id: number) => {
   </base-table>
 
   <edit-user-modal v-model:open="openEditModal" :user="editUserData" />
+  <user-info-drawer v-model:open="infodrawer" :user="userInfo" />
 </template>
