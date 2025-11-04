@@ -10,7 +10,7 @@ const useHelper = defineStore("helper", {
     leave() {
       localStorage.removeItem("texnoBazaar");
       this.token = "";
-      router.push("/");
+      router.push("/login");
     },
   },
 });
