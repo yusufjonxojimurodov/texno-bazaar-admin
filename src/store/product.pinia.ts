@@ -3,7 +3,7 @@ import { api } from "../utils/api";
 import { notification } from "ant-design-vue";
 
 export interface products {
-  _id: String;
+  id: String;
   name: String;
   description: String;
   price: Number | null;
@@ -72,7 +72,7 @@ const useProduct = defineStore("product", {
         data: form,
       })
         .then(({ data }) => {
-          const updatedProduct = this.products.findIndex((p) => p._id === id);
+          const updatedProduct = this.products.findIndex((p) => p.id === id);
           if (updatedProduct !== -1) {
             this.products[updatedProduct] = {
               ...this.products[updatedProduct],
@@ -134,7 +134,7 @@ const useProduct = defineStore("product", {
         .then(({ data }) => {
           const updatedProduct = data?.product;
 
-          const index = this.products.findIndex((item) => item._id === id);
+          const index = this.products.findIndex((item) => item.id === id);
           this.products[index] &&
             (this.products[index]!.status = updatedProduct?.status || status);
 

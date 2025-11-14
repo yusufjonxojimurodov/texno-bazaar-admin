@@ -3,7 +3,7 @@ import { api } from "../utils/api";
 import { notification } from "ant-design-vue";
 
 export interface Banner {
-  _id: number | string;
+  id: number | string;
   image: string;
   status: string;
   productUrl: string;
@@ -73,7 +73,7 @@ const useBanners = defineStore("banners", {
         data: status,
       })
         .then(({ data }) => {
-          const banner = this.banners.find((b) => b._id === id);
+          const banner = this.banners.find((b) => b.id === id);
           if (banner) {
             banner.status = data.status;
           }

@@ -11,7 +11,7 @@ export interface User {
     surname: string;
     avatarUrl: string;
     role: string;
-    userName: string;
+    username: string;
     phone: number | string;
     email: string;
     birthDate: string | number;
@@ -29,7 +29,7 @@ function closeDrawer() {
 }
 
 function openTelegramChat() {
-    window.open(`https://t.me/${props.user.userName}`, "_blank")
+    window.open(`https://t.me/${props.user.username}`, "_blank")
 }
 
 function callUser() {
@@ -82,9 +82,9 @@ console.log(props.user)
                     {{ user.name }} {{ user.surname }}
                 </h2>
                 <div class="flex flex-wrap gap-2 mt-1">
-                    <a-tag v-if="user.userName"
+                    <a-tag v-if="user.username"
                         class="!cursor-pointer !text-[9px] !px-[2px] !p-0 !m-0 md:!text-[12px] md:!px-2"
-                        @click="openTelegramChat" color="volcano">{{ user.userName }}</a-tag>
+                        @click="openTelegramChat" color="volcano">{{ user.username }}</a-tag>
                     <a-tag v-if="user.phone"
                         class="!cursor-pointer !text-[9px] !px-[2px] !p-0 !m-0 md:!text-[12px] md:!px-2"
                         @click="callUser" color="blue">{{ user.phone }}</a-tag>

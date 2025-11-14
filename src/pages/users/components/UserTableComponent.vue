@@ -4,7 +4,7 @@ import BaseTable from '../../../components/baseComponents/BaseTable.vue';
 import useUser from '../../../store/user.pinia';
 import IconEdit from '../../../components/icons/IconEdit.vue';
 import { userColumns } from '../../../columns/user.table';
-import EditUserModal from './form/EditUserModal.vue';
+import UserFormModal from './form/UserFormModal.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 import { computed, ref } from 'vue';
 import UserInfoDrawer from './UserInfoDrawer.vue';
@@ -12,19 +12,20 @@ import type { User } from './UserInfoDrawer.vue';
 import IconInfo from '../../../components/icons/IconInfo.vue';
 import IconPermisson from '../../../components/icons/IconPermisson.vue';
 import SettingPermissionModalComponent from '../../../components/modals/SettingPermissionModalComponent.vue';
+import { storeToRefs } from 'pinia';
 
 const userStore = useUser()
+const { userModel } = storeToRefs(userStore)
 
 const { setQueries } = useQueryParams()
 
-const openEditModal = ref<boolean>(false)
-const editUserData = ref<object>({})
+const openUserForm = ref<boolean>(false)
 const userInfo = ref<User>({
   name: "",
   surname: "",
   avatarUrl: "",
   role: "",
-  userName: "",
+  username: "",
   phone: 0,
   email: "",
   birthDate: "",
@@ -43,12 +44,14 @@ const handlePageChange = (pag: any) => {
 }
 
 function openModalEdit(record: any) {
-  console.log(record._id)
-  setQueries({
-    userId: record._id || undefined
-  })
-  editUserData.value = record
-  openEditModal.value = true
+  userModel.value.id = record.id
+  userModel.value.name = record.name
+  userModel.value.surname = record.surname
+  userModel.value.email = record.email
+  userModel.value.username = record.username
+  userModel.value.phone = record.phone
+
+  openUserForm.value = true
 }
 
 const roleValue = ref([
@@ -106,7 +109,7 @@ function openInfoDrawer(record: any) {
 
 function openPermissionSettingModal(record: any) {
   setQueries({
-    id: record._id || undefined
+    id: record.id || undefined
   })
   permissions.value = record.permission
   openSettingPermissionModal.value = true
@@ -121,21 +124,15 @@ function openPermissionSettingModal(record: any) {
         {{ (userStore.currentPage - 1) * userStore.pageSize + index + 1 }}
       </template>
 
-      <template v-else-if="column.dataIndex === 'avatarUrl'">
-        <div class="!flex !justify-center items-center">
-          <a-image :src="record.avatarUrl" :width="50" :height="50" style="border-radius: 50%; object-fit: cover" />
-        </div>
-      </template>
-
       <template v-else-if="column.dataIndex === 'role'">
         <a-select :loading="record.loading" :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
           (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-          " @change="(value: string) => handleRole(record._id, value, record)" style="width: 110px;" size="middle"
+          " @change="(value: string) => handleRole(record.id, value, record)" style="width: 110px;" size="middle"
           :options="filteredRoleOptions" v-model:value="record.role" />
       </template>
       <template v-else-if="column.dataIndex === 'userName'">
         <a-tag class="!w-full !text-[14px] !px-2 !py-1" color="volcano">
-          {{ record.userName }}
+          {{ record.username }}
         </a-tag>
       </template>
 
@@ -172,7 +169,7 @@ function openPermissionSettingModal(record: any) {
           </a-button>
           <a-popconfirm :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
             (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-            " @confirm="deleteUser(record._id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
+            " @confirm="deleteUser(record.id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
             <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
               (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
               " danger type="primary" size="small" class="!rounded-full !w-8 !h-8 !flex !justify-center !items-center">
@@ -190,7 +187,7 @@ function openPermissionSettingModal(record: any) {
     </template>
   </base-table>
 
-  <edit-user-modal v-model:open="openEditModal" :user="editUserData" />
+  <user-form-modal v-model:open="openUserForm" />
   <user-info-drawer v-model:open="infodrawer" :user="userInfo" />
   <setting-permission-modal-component :permissions="permissions" v-model:open="openSettingPermissionModal" />
 </template>

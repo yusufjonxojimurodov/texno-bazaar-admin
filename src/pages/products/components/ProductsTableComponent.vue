@@ -16,7 +16,7 @@ const loadingMap = reactive<{ [key: string]: boolean }>({})
 const openInfoDrawer = ref<boolean>(false)
 
 const productInfo = ref<Product>({
-    _id: "",
+    id: "",
     name: "",
     model: "",
     status: "ONSALE",
@@ -24,11 +24,11 @@ const productInfo = ref<Product>({
     description: "",
     price: null,
     discount: null,
-    discountPrice: null,
+    discount_price: null,
     left: null,
-    createdBy: {
-        userName: "",
-        _id: ""
+    created_by: {
+        username: "",
+        id: ""
     }
 })
 
@@ -63,7 +63,7 @@ function openDrawer(record: any) {
 </script>
 
 <template>
-    <base-table :loading="productStore.loading" @page-change="handlePageChange" :data="productStore.products"
+    <base-table :total="productStore.totalProducts" :loading="productStore.loading" @page-change="handlePageChange" :data="productStore.products"
         :columns="productColumn">
         <template #bodyCell="{ column, record, index }">
             <template v-if="column.dataIndex === 'colIndex'">
@@ -73,9 +73,9 @@ function openDrawer(record: any) {
             <template v-else-if="column.dataIndex === 'description'">
                 <p class="w-50 !m-0 !p-0"> {{ record.description }}</p>
             </template>
-            <template v-else-if="column.dataIndex === 'createdBy'">
-                <a target="_blank" :href="`https://t.me/${record.createdBy.userName}`" class="!m-0 !p-0">{{
-                    record.createdBy.userName
+            <template v-else-if="column.dataIndex === 'created_by'">
+                <a target="_blank" :href="`https://t.me/${record.created_by.username}`" class="!m-0 !p-0">{{
+                    record.created_by.username
                     }}</a>
             </template>
             <template v-else-if="column.dataIndex === 'price'">
@@ -96,11 +96,11 @@ function openDrawer(record: any) {
                 </div>
             </template>
             <template v-else-if="column.dataIndex === 'discountPrice'">
-                {{ record.discountPrice }}$
+                {{ record.discount_price }}$
             </template>
             <template v-else-if="column.dataIndex === 'actions'">
                 <div class="flex justify-center items-center gap-2">
-                    <a-button :loading="loadingMap[record._id]" @click="changeStatus(record._id, record.status)"
+                    <a-button :loading="loadingMap[record.id]" @click="changeStatus(record.id, record.status)"
                         type="primary" size="small"
                         :class="record.status === 'ONSALE' ? '!bg-[#2ead00]' : '!bg-[#ff0000]'"
                         class="!flex !w-8 !h-8 !rounded-full !justify-center !bg-none hover:!bg-none !items-center">
@@ -114,7 +114,7 @@ function openDrawer(record: any) {
                             <icon-info class="w-8 h-8" />
                         </template>
                     </a-button>
-                    <a-popconfirm :disabled="record.role === 'admin'" @confirm="deleteProduct(record._id)" ok-text="Ha"
+                    <a-popconfirm :disabled="record.role === 'admin'" @confirm="deleteProduct(record.id)" ok-text="Ha"
                         cancel-text="Yo'q" title="O'chirishga rozimisiz?">
                         <a-button :disabled="record.role === 'admin'" danger type="primary" size="small"
                             class="!flex !rounded-full !justify-center !items-center !w-8 !h-8">

@@ -2,11 +2,14 @@
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 import { debounce } from '../../../utils/helpers/debounce';
 import { ref } from 'vue';
+import IconPlus from '../../../components/icons/IconPlus.vue';
+import UserFormModal from './form/UserFormModal.vue';
 
 const { setQueries, getQueries } = useQueryParams()
 
 const userSearch = ref(getQueries('search'))
 const userRole = ref(getQueries("role"))
+const openUserForm = ref(false)
 const filterRoleOptions = ref([
     {
         label: "Admin",
@@ -49,5 +52,14 @@ function filterRole(value: string) {
             style="width: 180px;" />
         <a-select allow-clear :options="filterRoleOptions" @change="filterRole" v-model:value="userRole"
             placeholder="Rolni tanlang" size="large" style="width: 180px;" />
+        <a-button @click="openUserForm = true" class="!flex justify-center items-center gap-2" type="primary"
+            size="large">
+            <template #icon>
+                <icon-plus class="w-4 h-4" />
+            </template>
+            Qo'shish
+        </a-button>
     </div>
+
+    <user-form-modal v-model:open="openUserForm" />
 </template>

@@ -17,7 +17,6 @@ import SettingModalComponent from '../components/modals/SettingModalComponent.vu
 import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue';
 import IconBurger from '../components/icons/IconBurger.vue';
 import BurgerComponent from '../components/BurgerComponent.vue';
-import SettingPlatformModal from '../components/modals/SettingPlatformModal.vue';
 import IconSettingPlatform from '../components/icons/IconSettingPlatform.vue';
 
 const router = useRouter()
@@ -29,7 +28,6 @@ const collapsed = ref<boolean>(false)
 const openSettingModal = ref<boolean>(false)
 const openPasswordModal = ref<boolean>(false)
 const openMenuMobil = ref<boolean>(false)
-const openSettingPlatform = ref<boolean>(false)
 const selectedKeys = ref<string[]>(['1'])
 
 const pageTitles: Record<string, string> = {
@@ -54,7 +52,6 @@ const sidebarDesign = {
 
 onBeforeMount(() => {
     userStore.getMe()
-    avatarStore.getAvatar()
 })
 
 watch(
@@ -122,11 +119,6 @@ watch(
                             <icon-accaount class="w-5 h-5" />
                             <span class="text-[14px] !font-semibold">Hisob sozlamalari</span>
                         </div>
-                        <div @click="openSettingPlatform = true"
-                            class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
-                            <icon-setting-platform class="w-5 h-5" />
-                            <span class="text-[14px] !font-semibold" v-show="!collapsed">Platforma sozlamalari</span>
-                        </div>
                         <div @click="openPasswordModal = true"
                             class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
                             <icon-security class="w-5 h-5" />
@@ -162,7 +154,6 @@ watch(
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />
-    <setting-platform-modal v-model:open="openSettingPlatform" />
     <burger-component v-model:open="openMenuMobil" />
 </template>
 

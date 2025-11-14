@@ -8,7 +8,7 @@ import useProduct from '../../../store/product.pinia'
 const open = defineModel("open", { type: Boolean, default: false })
 
 export interface Product {
-    _id: string
+    id: string
     name: string
     model: string
     status: 'ONSALE' | 'NOTFORSALE'
@@ -16,11 +16,11 @@ export interface Product {
     description: string
     price: number | null
     discount: number | null
-    discountPrice: number | null
+    discount_price: number | null
     left: number | null
-    createdBy: {
-        userName: string
-        _id: string
+    created_by: {
+        username: string
+        id: string
     }
 }
 
@@ -95,7 +95,7 @@ function copyUser(id: string, type: string) {
 }
 
 function viewProduct(id: String) {
-    window.open(`https://texnobazaar.netlify.app/product/info?productId=${id}`, "_blank")
+    window.open(`http://localhost:5173/product/info?productId=${id}`, "_blank")
 }
 
 function startEdit() {
@@ -137,10 +137,10 @@ async function saveEdit(id: string | number) {
                             class="!w-[100px]" />
                     </p>
 
-                    <span @click="copyUser(product._id, 'product')"
+                    <span @click="copyUser(product.id, 'product')"
                         class="font-mono text-gray-500 rounded-[10px] transition cursor-pointer duration-150 hover:bg-gray-200">ID:
                         {{
-                            product._id }}</span>
+                            product.id }}</span>
                 </div>
 
                 <a-tag class="!text-[15px] !px-4 !py-1" :color="statusMap[product.status].color">
@@ -194,7 +194,7 @@ async function saveEdit(id: string | number) {
 
                 <div>
                     <span class="block text-sm text-gray-500">Chegirmali narx</span>
-                    <span class="font-semibold text-red-500 text-[15px]">{{ product.discountPrice }} $</span>
+                    <span class="font-semibold text-red-500 text-[15px]">{{ product.discount_price }} $</span>
                 </div>
             </div>
 
@@ -204,15 +204,15 @@ async function saveEdit(id: string | number) {
                 <div>
                     <span class="block text-gray-500 text-sm !m-0 !p-0">Mahsulot egasi</span>
                     <a-tag color="blue" class="!text-[10px] !px-2 !py-0 md:!text-[14px] md:!px-4 md:!py-2 font-medium">
-                        {{ product.createdBy.userName }}
+                        {{ product.created_by.username }}
                     </a-tag>
                 </div>
 
                 <div class="flex justify-center items-end gap-1 flex-col">
-                    <div @click="copyUser(product.createdBy._id, 'seller')">
+                    <div @click="copyUser(product.created_by.id, 'seller')">
                         <span
                             class="font-mono text-gray-500 text-[12px] md:text-[14px] md:!px-2 md:!py-[4px] rounded-[10px] transition cursor-pointer duration-150 hover:bg-gray-200">ID:
-                            {{ product.createdBy._id }}</span>
+                            {{ product.created_by.id }}</span>
                     </div>
 
                     <div class="flex justify-end items-center gap-2">
@@ -222,7 +222,7 @@ async function saveEdit(id: string | number) {
                                     <icon-edit class="w-4 h-4 md:w-5 md:h-5" />
                                 </template>
                             </a-button>
-                            <a-button @click="viewProduct(product._id)" type="primary"
+                            <a-button @click="viewProduct(product.id)" type="primary"
                                 :size="windowWidth > 768 ? 'middle' : 'small'">
                                 <template #icon>
                                     <icon-eye class="w-4 h-4 md:w-5 md:h-5" />
@@ -233,7 +233,7 @@ async function saveEdit(id: string | number) {
                         <template v-else>
                             <a-button danger @click="cancelEdit">Bekor qilish</a-button>
                             <a-button :loading="productStore.buttonLoader" type="primary"
-                                @click="saveEdit(product._id)">Saqlash</a-button>
+                                @click="saveEdit(product.id)">Saqlash</a-button>
                         </template>
                     </div>
                 </div>

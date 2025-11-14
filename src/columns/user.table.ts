@@ -7,13 +7,6 @@ export const userColumns = [
     align: "center",
   },
   {
-    title: "Profili",
-    dataIndex: "avatarUrl",
-    key: "avatarUrl",
-    width: 70,
-    align: "center",
-  },
-  {
     title: "Ismi",
     dataIndex: "name",
     key: "name",

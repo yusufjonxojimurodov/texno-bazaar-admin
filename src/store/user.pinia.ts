@@ -13,14 +13,23 @@ export interface UserInfo {
   phone: string;
   role: string;
   surname: string;
-  userName: string;
-  _id: string;
+  username: string;
+  id: string | number | null;
 }
 
 const useUser = defineStore("user", {
   state: () => ({
     user: {} as UserInfo,
-    allUsers: [],
+    allUsers: [] as UserInfo[],
+    userModel: {
+      id: "",
+      name: "",
+      surname: "",
+      phone: "",
+      email: "",
+      username: "",
+      password: "",
+    },
     currentPage: 0,
     pageSize: 10,
     totalUsers: undefined,
@@ -193,7 +202,37 @@ const useUser = defineStore("user", {
         });
     },
 
-    async putUser(form: object, id: number) {
+    createUser(form: object, callback: Function) {
+      this.buttonLoader = true;
+
+      api({
+        url: "/api/users/register",
+        method: "POST",
+        data: form,
+      })
+        .then(({ data }) => {
+          this.allUsers.unshift(data.user);
+          notification.success({
+            message: "Foydalanuvchi yaratildi",
+          });
+          callback?.();
+        })
+        .catch((error) => {
+          const errorMessage = error.response?.data.message || error;
+          notification.error({
+            message: errorMessage,
+          });
+        })
+        .finally(() => {
+          this.buttonLoader = false;
+        });
+    },
+
+    async putUser(
+      form: object,
+      id: number | null | string,
+      callback: Function
+    ) {
       this.buttonLoader = true;
 
       return api({
@@ -205,6 +244,7 @@ const useUser = defineStore("user", {
           notification.success({
             message: "Foydalanuvchi ma'lumotlari yangilandi",
           });
+          callback?.();
         })
         .catch((error) => {
           const errorMessage = error.response?.data.message || error;

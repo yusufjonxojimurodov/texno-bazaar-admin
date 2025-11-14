@@ -29,8 +29,8 @@ export const productColumn = [
   },
   {
     title: "Egasi",
-    dataIndex: "createdBy",
-    key: "createdBy",
+    dataIndex: "created_by",
+    key: "created_by",
     width: 120,
     align: "center",
   },
