@@ -2,8 +2,8 @@
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 import { debounce } from '../../../utils/helpers/debounce';
 import { ref } from 'vue';
-import IconPlus from '../../../components/icons/IconPlus.vue';
 import UserFormModal from './form/UserFormModal.vue';
+import PlusIcon from '../../../components/icons/PlusIcon.vue';
 
 const { setQueries, getQueries } = useQueryParams()
 
@@ -55,7 +55,7 @@ function filterRole(value: string) {
         <a-button @click="openUserForm = true" class="!flex justify-center items-center gap-2" type="primary"
             size="large">
             <template #icon>
-                <icon-plus class="w-4 h-4" />
+                <plus-icon class="w-4 h-4" />
             </template>
             Qo'shish
         </a-button>

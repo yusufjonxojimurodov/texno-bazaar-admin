@@ -11,18 +11,15 @@ import IconSetting from '../components/icons/IconSetting.vue';
 import IconAccaount from '../components/icons/IconAccaount.vue';
 import IconSecurity from '../components/icons/IconSecurity.vue';
 import useUser from '../store/user.pinia';
-import useAvatar from '../store/avatar.pinia';
 import ProfileComponent from '../components/ProfileComponent.vue';
 import SettingModalComponent from '../components/modals/SettingModalComponent.vue';
 import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue';
 import IconBurger from '../components/icons/IconBurger.vue';
 import BurgerComponent from '../components/BurgerComponent.vue';
-import IconSettingPlatform from '../components/icons/IconSettingPlatform.vue';
 
 const router = useRouter()
 const userStore = useUser()
 const route = useRoute()
-const avatarStore = useAvatar()
 
 const collapsed = ref<boolean>(false)
 const openSettingModal = ref<boolean>(false)
