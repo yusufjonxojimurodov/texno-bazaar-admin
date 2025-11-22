@@ -29,7 +29,13 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  background-color: var(--danger) !important;
+  background-color: white !important;
+  color: var(--danger) !important;
+  border: 1px solid var(--danger) !important;
+}
+
+.ant-btn:active {
+  transform: scale(0.95) !important;
 }
 
 .ant-btn[disabled],

@@ -95,7 +95,7 @@ function copyUser(id: string, type: string) {
 }
 
 function viewProduct(id: String) {
-    window.open(`http://localhost:5173/product/info?productId=${id}`, "_blank")
+    window.open(`https://texnobazaar.netlify.app/product/info?productId=${id}`, "_blank")
 }
 
 function startEdit() {

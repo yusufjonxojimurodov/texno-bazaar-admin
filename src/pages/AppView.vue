@@ -147,7 +147,7 @@ watch(
             </a-layout-content>
         </a-layout>
     </a-layout>
-    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.10</p>
+    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.13</p>
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />

@@ -36,7 +36,7 @@ function closeModal() {
                 <a-input v-model:value="userModel.surname" size="large" placeholder="Familyasini kiriting" />
             </a-form-item>
             <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" label="Telefon raqami" name="phone">
-                <a-input v-model:value="userModel.phone" size="large" placeholder="Telefon raqamini kiriting" />
+                <a-input addonBefore="+998" v-model:value="userModel.phone" size="large" placeholder="Telefon raqamini kiriting" />
             </a-form-item>
             <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" label="Foydalanuvchi nomi"
                 name="username">

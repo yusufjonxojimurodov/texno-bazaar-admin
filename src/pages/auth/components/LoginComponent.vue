@@ -39,10 +39,19 @@ function phoneInput(e: Event) {
             </a-form-item>
 
             <div class="flex justify-end">
-                <a-button :loading="userStore.loading" html-type="submit" type="primary" size="large">
-                    Tizimga kirish
+                <a-button class="!shadow-none !bg-white !text-black !w-full" :loading="userStore.loading"
+                    html-type="submit" type="primary" size="large">
+                    <template #icon>
+                        Tizimga kirish
+                    </template>
                 </a-button>
             </div>
         </a-form>
     </div>
 </template>
+
+<style scoped>
+:deep(.ant-form-item-label > label) {
+    color: #ffffff !important;
+}
+</style>

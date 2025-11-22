@@ -53,6 +53,7 @@ const monthNames = [
 
 const currentMonthName = computed(() => {
     const month = statisticStore.graphInfo?.month;
+    statisticStore.currentMonthName = monthNames[month - 1]! || ""
     return month ? monthNames[month - 1] : "";
 });
 </script>

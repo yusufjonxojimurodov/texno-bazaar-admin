@@ -11,14 +11,14 @@ interface UpdateForm {
     name: string
     surname: string
     email: string
-    birthDate: string | null
+    birth_date: string | null
 }
 
 const updateForm = reactive<UpdateForm>({
     name: "",
     surname: "",
     email: "",
-    birthDate: null,
+    birth_date: null,
 })
 
 watch(
@@ -29,7 +29,7 @@ watch(
                 name: newUser.name,
                 surname: newUser.surname,
                 email: newUser.email,
-                birthDate: newUser.birthDate ? dayjs(newUser.birthDate) : null,
+                birth_date: newUser.birth_date ? dayjs(newUser.birth_date) : null,
             });
         }
     },
@@ -62,13 +62,13 @@ function closeModal() {
             </a-form-item>
             <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="birthDate"
                 label="Tug'ilgan sanangiz">
-                <a-date-picker size="large" class="!w-full" v-model:value="updateForm.birthDate" />
+                <a-date-picker size="large" class="!w-full" v-model:value="updateForm.birth_date" />
             </a-form-item>
         </a-form>
 
         <template #footer>
             <a-space>
-                <a-button @click="open = false" size="large">
+                <a-button danger @click="open = false" size="large">
                     Yopish
                 </a-button>
                 <a-button :loading="userStore.buttonLoader" form="updateForm" html-type="submit" size="large" type="primary">

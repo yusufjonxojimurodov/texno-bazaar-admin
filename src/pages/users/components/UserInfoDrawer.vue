@@ -14,8 +14,8 @@ export interface User {
     username: string;
     phone: number | string;
     email: string;
-    birthDate: string | number;
-    chatId: string | number;
+    birth_date: string | number;
+    chat_id: string | number;
     points: number;
     rating: number;
 }
@@ -76,9 +76,8 @@ console.log(props.user)
         </template>
 
         <div class="flex items-center gap-4 border-b border-b-gray-400 pb-4 mb-4">
-            <a-avatar :src="user.avatarUrl" :size="70" class="shadow-md" style="border: 2px solid #e5e7eb" />
             <div>
-                <h2 class="text-[12px] md:text-xl font-semibold text-gray-800 !m-0">
+                <h2 class="text-[12px] mb-4 md:text-xl font-semibold text-gray-800 !m-0">
                     {{ user.name }} {{ user.surname }}
                 </h2>
                 <div class="flex flex-wrap gap-2 mt-1">
@@ -100,11 +99,11 @@ console.log(props.user)
                 <icon-personal-information class="w-4 h-4" />
                 <h4 class="text-lg font-semibold text-gray-800 !p-0 !m-0">Shaxsiy ma'lumotlar</h4>
             </div>
-            <p><strong class="text-gray-800">Tug'ilgan sana:</strong> {{ user.birthDate ?
-                dayjs(user.birthDate).format("DD.MM.YYYY") :
+            <p><strong class="text-gray-800">Tug'ilgan sana:</strong> {{ user.birth_date ?
+                dayjs(user.birth_date).format("DD.MM.YYYY") :
                 "Kiritilmagan"
             }}</p>
-            <p><strong class="text-gray-800">Chat ID:</strong> {{ user.chatId || "Kiritilmagan" }}</p>
+            <p><strong class="text-gray-800">Chat ID:</strong> {{ user.chat_id || "Kiritilmagan" }}</p>
         </div>
 
         <div class="space-y-2 border-b border-b-gray-400 pb-4 mb-4">

@@ -65,7 +65,7 @@ function closeModal() {
 
         <template #footer>
             <a-space>
-                <a-button size="large" @click="closeModal">
+                <a-button danger size="large" @click="closeModal">
                     Bekor qilish
                 </a-button>
                 <a-button :loading="userStore.buttonLoader" form="passwordForm" html-type="submit" type="primary"

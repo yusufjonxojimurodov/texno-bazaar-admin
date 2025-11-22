@@ -5,7 +5,7 @@ import useHelper from "./helper.pinia";
 import router from "../router";
 
 export interface UserInfo {
-  birthDate: string;
+  birth_date: string;
   chatId: number;
   email: string;
   faceRegistered: boolean;

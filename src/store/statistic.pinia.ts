@@ -27,6 +27,7 @@ const useStatistic = defineStore("statistic", {
   state: () => ({
     graphInfo: {} as StatisticResponse,
     usersStats: {} as UserStats,
+    currentMonthName: "",
     loading: false,
   }),
 

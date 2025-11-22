@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { debounce } from '../../../utils/helpers/debounce';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
+import IconSearch from '../../../components/icons/IconSearch.vue';
 
 const { setQueries, getQueries } = useQueryParams()
 
@@ -56,7 +57,11 @@ function filterModel(value: string) {
 <template>
     <div class="flex justify-end items-center gap-3 !mb-3 flex-wrap">
         <a-input v-model:value="searchInput" @input="handleSearch" class="!w-[48%] md:!w-[180px]" size="large"
-            placeholder="Qidirish..." />
+            placeholder="Qidirish..." >
+            <template #addonAfter>
+                <icon-search class="w-5 h-5 text-gray-500"/>
+            </template>
+        </a-input>
         <a-select v-model:value="valueType" @change="filterType" allow-clear class="!w-[48%] md:!w-[180px]"
             :options="types" size="large" placeholder="Turini tanlang" />
         <a-select v-model:value="valueModel" @change="filterModel" allow-clear class="!w-full md:!w-[180px]"

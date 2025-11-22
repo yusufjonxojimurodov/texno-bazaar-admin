@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
+import useStatistic from '../../../store/statistic.pinia';
+
+const statisticStore = useStatistic()
 
 const { setQueries, getQueries } = useQueryParams()
-const yearValue = ref(getQueries("year"))
-const monthValue = ref(getQueries("month"))
+const yearValue = ref(getQueries("year") || '2025')
+const monthValue = ref(getQueries("month") || statisticStore.graphInfo?.month || "1")
 
 const yearOptions = [
     {
