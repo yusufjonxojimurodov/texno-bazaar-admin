@@ -28,8 +28,8 @@ const userInfo = ref<User>({
   username: "",
   phone: 0,
   email: "",
-  birthDate: "",
-  chatId: 0,
+  birth_date: "",
+  chat_id: 0,
   points: 0,
   rating: 0,
 })
