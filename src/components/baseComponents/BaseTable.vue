@@ -22,26 +22,46 @@ const props = defineProps({
     pageSize: {
         type: Number,
         default: 10
+    },
+    showPagination: {     
+        type: Boolean,
+        default: true
     }
 })
 
 const emit = defineEmits(['pageChange'])
 
-const pagination = ref<TablePaginationConfig>({
-    current: 1,
-    pageSize: props.pageSize,
-    total: props.total,
-    showSizeChanger: true,
-    showQuickJumper: true,
-    showTotal: (total: number) => `Jami ${total} ta yozuv`
-})
+const getPagination = () => {
+    return props.showPagination
+        ? {
+              current: 1,
+              pageSize: props.pageSize,
+              total: props.total,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: (total: number) => `Jami ${total} ta yozuv`
+          }
+        : false
+}
+
+const pagination = ref<TablePaginationConfig | false>(getPagination())
 
 watch(
     () => props.total,
     (newVal) => {
-        pagination.value.total = newVal
+        if (pagination.value && typeof pagination.value !== 'boolean') {
+            pagination.value.total = newVal
+        }
     }
 )
+
+watch(
+    () => props.showPagination,
+    () => {
+        pagination.value = getPagination()
+    }
+)
+
 
 const handleTableChange = (pag: TablePaginationConfig) => {
     pagination.value = pag
@@ -50,8 +70,15 @@ const handleTableChange = (pag: TablePaginationConfig) => {
 </script>
 
 <template>
-    <a-table :scroll="{ x: 'max-content' }" :data-source="props.data" :columns="props.columns" :loading="props.loading"
-        :pagination="pagination" @change="handleTableChange" bordered>
+   <a-table
+        :scroll="{ x: 'max-content' }"
+        :data-source="props.data"
+        :columns="props.columns"
+        :loading="props.loading"
+        :pagination="pagination"
+        @change="handleTableChange"
+        bordered
+    >
         <template #bodyCell="{ column, record, index }">
             <slot name="bodyCell" :column="column" :record="record" :index="index" />
         </template>

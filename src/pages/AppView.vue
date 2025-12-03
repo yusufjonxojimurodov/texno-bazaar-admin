@@ -16,6 +16,7 @@ import SettingModalComponent from '../components/modals/SettingModalComponent.vu
 import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue';
 import IconBurger from '../components/icons/IconBurger.vue';
 import BurgerComponent from '../components/BurgerComponent.vue';
+import IconModel from '../components/icons/IconModel.vue';
 
 const router = useRouter()
 const userStore = useUser()
@@ -31,6 +32,7 @@ const pageTitles: Record<string, string> = {
     Users: "Foydalanuvchilar",
     Products: "Mahsulotlar",
     Statistics: "Statistika",
+    Models: "Mahsulot modellari",
     Banners: "Bannerlar",
 }
 
@@ -58,6 +60,7 @@ watch(
         else if (newPath.includes('/products')) selectedKeys.value = ['2']
         else if (newPath.includes('/statistics')) selectedKeys.value = ['3']
         else if (newPath.includes('/banners')) selectedKeys.value = ['4']
+        else if (newPath.includes('/models')) selectedKeys.value = ['5']
         else selectedKeys.value = []
         openMenuMobil.value = false
     }, { immediate: true })
@@ -99,10 +102,17 @@ watch(
                     class="!mt-2 bg-transparent" key="4">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-ad class="w-5 h-5" />
-                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Bannerlar</span>
+                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Reklamalar</span>
                     </div>
                 </a-menu-item>
-                <a-sub-menu class="!mt-2 bg-transparent" key="5">
+                <a-menu-item :title="!collapsed ? '' : 'Modellar'" @click="router.push({ name: 'Models' })"
+                    class="!mt-2 bg-transparent" key="5">
+                    <div class="flex justify-start gap-2 items-center">
+                        <icon-model class="w-5 h-5" />
+                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Modellar</span>
+                    </div>
+                </a-menu-item>
+                <a-sub-menu class="!mt-2 bg-transparent" key="6">
                     <template #title>
                         <div class="flex justify-start gap-2 items-center">
                             <icon-setting class="w-5 h-5" />
@@ -147,7 +157,7 @@ watch(
             </a-layout-content>
         </a-layout>
     </a-layout>
-    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.14</p>
+    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.15</p>
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />

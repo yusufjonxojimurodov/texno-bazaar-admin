@@ -4,6 +4,7 @@ import useAvatar from '../store/avatar.pinia';
 import useHelper from '../store/helper.pinia';
 import useUser from '../store/user.pinia';
 import IconLogOut from './icons/IconLogOut.vue';
+import IconProfile from './icons/IconProfile.vue';
 
 const helperStore = useHelper()
 const userStore = useUser()
