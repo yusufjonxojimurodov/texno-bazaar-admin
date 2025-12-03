@@ -136,15 +136,6 @@ function openPermissionSettingModal(record: any) {
         </a-tag>
       </template>
 
-      <template v-else-if="column.dataIndex === 'faceRegistered'">
-        <a-tag style="width: 90px;" v-if="record.faceRegistered" color="success">
-          O'rnatilgan
-        </a-tag>
-        <a-tag style="width: 90px;" size="large" v-else color="error">
-          O'rnatilmagan
-        </a-tag>
-      </template>
-
       <template v-else-if="column.dataIndex === 'actions'">
         <a-space>
           <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
@@ -161,7 +152,7 @@ function openPermissionSettingModal(record: any) {
               <icon-info class="w-8 h-8" />
             </template>
           </a-button>
-          <a-button :disabled="record.role !== 'moderator'" @click="openPermissionSettingModal(record)"
+          <a-button v-if="userStore.user.role !== 'moderator'" @click="openPermissionSettingModal(record)"
             class="!rounded-full !w-8 !h-8 !flex !justify-center items-center" type="primary" size="small">
             <template #icon>
               <icon-permisson class="w-5 h-5" />

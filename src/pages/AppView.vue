@@ -65,7 +65,7 @@ watch(
 
 <template>
     <a-layout style="min-height: 100vh">
-        <a-layout-sider :width="240" :collapsed-width="80" class="hidden md:block shadow-xl" :style="sidebarDesign"
+        <a-layout-sider :width="240" :collapsed-width="80" class="hidden md:block" :style="sidebarDesign"
             v-model:collapsed="collapsed" :trigger="null" collapsible>
             <div v-if="!collapsed" class="py-4 flex justify-center items-center flex-col gap-1">
                 <h2 class="text-[24px] !font-bold text-[#0D2240] !p-0 !m-0">TEXNOBAZAAR</h2>
@@ -75,34 +75,34 @@ watch(
 
             <a-menu class="w-full !bg-white" mode="inline" v-model:selectedKeys="selectedKeys">
                 <a-menu-item :title="!collapsed ? '' : 'Foydalanuvchilar'" @click="router.push('/')"
-                    class="!mt-2 shadow-sm bg-transparent" key="1">
+                    class="!mt-2 bg-transparent" key="1">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-users class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Foydalanuvchilar</span>
                     </div>
                 </a-menu-item>
                 <a-menu-item :title="!collapsed ? '' : 'Mahsulotlar'" @click="router.push('/products')"
-                    class="!mt-2 shadow-sm bg-transparent" key="2">
+                    class="!mt-2 bg-transparent" key="2">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-products class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Mahsulotlar</span>
                     </div>
                 </a-menu-item>
                 <a-menu-item :title="!collapsed ? '' : 'Statistika'" @click="router.push('/statistics')"
-                    class="!mt-2  shadow-sm bg-transparent" key="3">
+                    class="!mt-2 bg-transparent" key="3">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-statistic class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Statistika</span>
                     </div>
                 </a-menu-item>
                 <a-menu-item :title="!collapsed ? '' : 'Bannerlar'" @click="router.push('/banners')"
-                    class="!mt-2 shadow-sm bg-transparent" key="4">
+                    class="!mt-2 bg-transparent" key="4">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-ad class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Bannerlar</span>
                     </div>
                 </a-menu-item>
-                <a-sub-menu class="!mt-2  shadow-sm bg-transparent" key="5">
+                <a-sub-menu class="!mt-2 bg-transparent" key="5">
                     <template #title>
                         <div class="flex justify-start gap-2 items-center">
                             <icon-setting class="w-5 h-5" />
@@ -147,7 +147,7 @@ watch(
             </a-layout-content>
         </a-layout>
     </a-layout>
-    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.13</p>
+    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.14</p>
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />

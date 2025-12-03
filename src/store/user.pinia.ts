@@ -14,6 +14,7 @@ export interface UserInfo {
   role: string;
   surname: string;
   username: string;
+  avatar_content_type: string,
   id: string | number | null;
 }
 

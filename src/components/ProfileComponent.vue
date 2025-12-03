@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import useAvatar from '../store/avatar.pinia';
 import useHelper from '../store/helper.pinia';
 import useUser from '../store/user.pinia';
@@ -7,15 +8,24 @@ import IconLogOut from './icons/IconLogOut.vue';
 const helperStore = useHelper()
 const userStore = useUser()
 const avatarStore = useAvatar()
+
+watch(() => userStore.user, () => {
+    if (userStore.user) {
+        avatarStore.getAvatar()
+    }
+})
 </script>
 
 <template>
     <div class="flex justify-center items-center gap-2">
-        <h2 class="text-[18px] !p-0 !m-0 !font-semibold !hidden md:!block">{{ userStore.user.name }} {{
-            userStore.user.surname }}</h2>
-        <a-dropdown trigger="click">
+        <a-dropdown trigger="hover">
             <template #default>
-                <a-avatar class="cursor-pointer" :size="54" :src="avatarStore.avatar" />
+                <a-avatar class="cursor-pointer!" :size="58">
+                    <template #icon>
+                        <img v-if="avatarStore.avatarUrl" :src="avatarStore.avatarUrl" alt="avatar" />
+                        <icon-profile v-else />
+                    </template>
+                </a-avatar>
             </template>
 
             <template #overlay>
@@ -25,7 +35,8 @@ const avatarStore = useAvatar()
                             {{ userStore.user.surname }}</span>
                     </a-menu-item>
                     <a-menu-item key="1">
-                        <a-popconfirm @confirm="helperStore.leave()" title="Hisobingizdan chiqmoqchimisiz ?">
+                        <a-popconfirm ok-text="Ha" cancel-text="Yo'q" @confirm="helperStore.leave()"
+                            title="Hisobingizdan chiqmoqchimisiz ?">
                             <a-button class="!flex !justify-start !items-center gap-2" danger type="text" size="small">
                                 <template #icon>
                                     <icon-log-out />

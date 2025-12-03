@@ -11,6 +11,7 @@ const route = useRoute()
 const { getQueries } = useQueryParams()
 
 watch(() => route.query, () => {
+    if (!localStorage.getItem("texnoBazaar")) return;
     if (!route.query.userId && !route.query.id) {
         userStore.getUsers({
             search: getQueries("search") || undefined,

@@ -3,39 +3,25 @@ import LoginComponent from './components/LoginComponent.vue';
 </script>
 
 <template>
-   <div class="min-h-screen relative flex items-center justify-center bg-[#2148C0]">
-      <div class="!w-full max-w-md p-5 rounded-2xl z-9999 shadow-md shadow-white">
-         <div class="mb-6 flex justify-center items-center">
-            <img src="../../assets/images/basket.svg" alt="basket">
-         </div>
-         <login-component />
+   <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div class="flex items-center gap-1 mb-12">
+         <img width="70" height="70" src="../../assets/images/admin.png" alt="admin_logo">
+         <h1 class="text-3xl font-bold! text-gray-800 p-0! m-0!">TexnoBazaar boshqaruv paneli</h1>
       </div>
 
-      <img class="absolute right-0 top-0" src="../../assets/images/login-background1.svg" alt="bg">
-      <img class="absolute left-0 bottom-0" src="../../assets/images/login-background2.svg" alt="bg">
+      <div
+         class="flex flex-col md:flex-row items-stretch gap-8 bg-white shadow-lg rounded-2xl p-8 md:p-12 w-full max-w-4xl">
+         <login-component class="h-full" />
+         <a-card class="flex-1 w-full bg-gray-50 p-6 rounded-xl shadow-inner !h-[380px]">
+            <h2 class="text-xl font-semibold mb-4">Admin imkoniyatlari</h2>
+            <ul class="list-disc list-inside space-y-2 text-gray-700">
+               <li>Platforma boshqaruvi</li>
+               <li>Ma’lumotlar va statistika</li>
+               <li>Chat va kommunikatsiyalar</li>
+               <li>Xavfsizlik va ruxsatlar</li>
+               <li>Maxsus imkoniyatlar</li>
+            </ul>
+         </a-card>
+      </div>
    </div>
 </template>
-
-<style>
-.liquid-glass {
-   background: rgba(255, 255, 255, 0.1);
-   backdrop-filter: blur(20px) saturate(150%);
-   -webkit-backdrop-filter: blur(20px) saturate(150%);
-   position: relative;
-   overflow: hidden;
-}
-
-.liquid-glass::before {
-   content: "";
-   position: absolute;
-   top: -50%;
-   left: -50%;
-   width: 200%;
-   height: 200%;
-   background: radial-gradient(circle at 30% 30%,
-         rgba(0, 0, 0, 0.3),
-         rgba(255, 255, 255, 0.05));
-   animation: liquid 6s infinite linear;
-}
-
-</style>

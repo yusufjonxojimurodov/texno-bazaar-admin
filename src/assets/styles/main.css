@@ -1,3 +1,14 @@
 @import "tailwindcss";
 @import "./antd.css";
-@import "./variable.css"
+@import "./variable.css";
+
+.container {
+  max-width: 100%;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.btn-orange {
+  background-color: orange !important;
+  color: white !important;
+}
