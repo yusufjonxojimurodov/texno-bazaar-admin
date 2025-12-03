@@ -46,9 +46,7 @@
   opacity: 0.5 !important;
   transition: opacity 0.15s ease;
   border: none !important;
-  fill: white !important;
-  stroke: white !important;
-  color: white !important;
+  color: red !important;
 }
 
 .ant-select-focused .ant-select-selector {

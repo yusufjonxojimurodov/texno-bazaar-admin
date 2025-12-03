@@ -163,7 +163,8 @@ function openPermissionSettingModal(record: any) {
             " @confirm="deleteUser(record.id)" ok-text="Ha" cancel-text="Yo'q" title="O'chirishga rozimisiz?">
             <a-button :disabled="(userStore.user.role === 'admin' && record.role === 'admin') ||
               (userStore.user.role === 'moderator' && (record.role === 'admin' || record.role === 'moderator'))
-              " danger type="primary" size="small" class="!rounded-full !w-8 !h-8 !flex !justify-center !items-center">
+              " danger type="primary" size="small"
+              class="!rounded-full border-1! border-red-500! !w-8 !h-8 !flex !justify-center !items-center">
               <template #icon>
                 <icon-delete class="w-5 h-5" />
               </template>

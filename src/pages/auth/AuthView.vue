@@ -4,9 +4,9 @@ import LoginComponent from './components/LoginComponent.vue';
 
 <template>
    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div class="flex items-center gap-1 mb-12">
-         <img width="70" height="70" src="../../assets/images/admin.png" alt="admin_logo">
-         <h1 class="text-3xl font-bold! text-gray-800 p-0! m-0!">TexnoBazaar boshqaruv paneli</h1>
+      <div class="flex items-center gap-1 py-6 md:mb-12">
+         <img class="w-14 h-14 md:w-20 md:h-20" src="../../assets/images/admin.png" alt="admin_logo">
+         <h1 class="text-[18px] sm:text-2xl md:text-3xl font-bold! text-gray-800 p-0! m-0!">TexnoBazaar boshqaruv paneli</h1>
       </div>
 
       <div

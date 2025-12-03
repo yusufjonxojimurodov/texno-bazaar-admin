@@ -73,11 +73,6 @@ function closeDrawer() {
                             <icon-accaount class="w-5 h-5" />
                             <span class="text-[14px] !font-semibold">Hisob sozlamalari</span>
                         </div>
-                        <!-- <div
-                            class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
-                            <icon-setting-platform class="w-5 h-5" />
-                            <span class="text-[14px] !font-semibold" v-show="!collapsed">Platforma sozlamalari</span>
-                        </div> -->
                         <div @click="openPasswordModal = true"
                             class="transition duration-200 cursor-pointer hover:text-blue-500 !w-full !flex !justify-start gap-2 items-center">
                             <icon-security class="w-5 h-5" />

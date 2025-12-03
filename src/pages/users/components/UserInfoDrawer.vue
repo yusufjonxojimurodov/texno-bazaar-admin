@@ -77,9 +77,14 @@ console.log(props.user)
 
         <div class="flex items-center gap-4 border-b border-b-gray-400 pb-4 mb-4">
             <div>
-                <h2 class="text-[12px] mb-4 md:text-xl font-semibold text-gray-800 !m-0">
-                    {{ user.name }} {{ user.surname }}
-                </h2>
+                <div class="flex justify-start items-center gap-2 mb-2">
+                    <a-avatar :size="48">
+                        <span class="font-semibold! text-[24px]!">{{ user.name.charAt(0).toUpperCase() }}</span>
+                    </a-avatar>
+                    <h2 class="text-[12px] mb-4 md:text-xl font-semibold text-gray-800 !m-0">
+                        {{ user.name }} {{ user.surname }}
+                    </h2>
+                </div>
                 <div class="flex flex-wrap gap-2 mt-1">
                     <a-tag v-if="user.username"
                         class="!cursor-pointer !text-[9px] !px-[2px] !p-0 !m-0 md:!text-[12px] md:!px-2"

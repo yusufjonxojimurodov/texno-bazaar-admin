@@ -60,7 +60,7 @@ function focusPassword() {
 </script>
 
 <template>
-    <a-card class="w-[48%]">
+    <a-card class="w-full md:w-[48%]">
         <div>
             <h2 class="text-[32px]">Tizimga kirish</h2>
         </div>
