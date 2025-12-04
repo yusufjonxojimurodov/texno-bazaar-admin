@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { api } from "../utils/api";
 import { notification } from "ant-design-vue";
 
-export interface models {
+export interface types {
   label: string;
   value: string;
   created_at: string;
@@ -15,27 +15,27 @@ export interface form {
   value: string;
 }
 
-const useModels = defineStore("models", {
+const useTypes = defineStore("types", {
   state: () => ({
-    models: [] as models[],
+    types: [] as types[],
     loading: false,
     buttonLoading: false,
     form: {} as form,
   }),
 
   actions: {
-    getModels({ search = undefined }) {
+    getTypes({ search = undefined }) {
       this.loading = true;
 
       api({
-        url: "/api/product/models",
+        url: "/api/product/types",
         method: "GET",
         params: {
           search,
         },
       })
         .then(({ data }) => {
-          this.models = data.models;
+          this.types = data.types;
         })
         .catch((error) => {
           const errorMessage = error.response?.data.message || error;
@@ -49,11 +49,11 @@ const useModels = defineStore("models", {
         });
     },
 
-    createModel(callback: Function) {
+    createType(callback: Function) {
       this.buttonLoading = true;
 
       api({
-        url: "/api/product/create-model",
+        url: "/api/product/create-type",
         method: "POST",
         data: {
           label: this.form.label,
@@ -61,7 +61,7 @@ const useModels = defineStore("models", {
         },
       })
         .then(({ data }) => {
-          this.models.unshift(data.models);
+          this.types.unshift(data.type);
           callback?.();
         })
         .catch((error) => {
@@ -76,11 +76,11 @@ const useModels = defineStore("models", {
         });
     },
 
-    updateModel(callback: Function) {
+    updateType(callback: Function) {
       this.buttonLoading = true;
 
       api({
-        url: `/api/product/update-model/${this.form.id}`,
+        url: `/api/product/update-type/${this.form.id}`,
         method: "PUT",
         data: {
           label: this.form.label,
@@ -88,7 +88,7 @@ const useModels = defineStore("models", {
         },
       })
         .then(() => {
-          this.getModels({});
+          this.getTypes({});
           callback?.();
         })
         .catch((error) => {
@@ -103,15 +103,15 @@ const useModels = defineStore("models", {
         });
     },
 
-    deleteModel(id: number) {
+    deleteType(id: number) {
       this.loading = true;
 
       api({
-        url: `/api/product/delete-model/${id}`,
+        url: `/api/product/delete-type/${id}`,
         method: "DELETE",
       })
         .then(() => {
-          this.getModels({});
+          this.getTypes({});
         })
         .catch((error) => {
           const errorMessage = error.response?.data.message || error;
@@ -121,10 +121,10 @@ const useModels = defineStore("models", {
           console.error(error);
         })
         .finally(() => {
-          this.buttonLoading = false;
+          this.loading = false;
         });
     },
   },
 });
 
-export default useModels;
+export default useTypes;

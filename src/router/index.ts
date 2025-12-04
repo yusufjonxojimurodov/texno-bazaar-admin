@@ -7,6 +7,7 @@ import StatisticsView from "../pages/statistic/StatisticsView.vue";
 import BannerView from "../pages/banners/BannerView.vue";
 import _404 from "../pages/_404.vue";
 import ProductModelsView from "../pages/product-models/ProductModelsView.vue";
+import ProductTypesView from "../pages/product-types/ProductTypesView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -46,6 +47,11 @@ const router = createRouter({
           path: "models",
           name: "Models",
           component: ProductModelsView,
+        },
+        {
+          path: "types",
+          name: "Types",
+          component: ProductTypesView,
         },
       ],
     },

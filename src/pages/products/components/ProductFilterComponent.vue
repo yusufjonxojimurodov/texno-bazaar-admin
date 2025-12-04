@@ -1,39 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { debounce } from '../../../utils/helpers/debounce';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 import IconSearch from '../../../components/icons/IconSearch.vue';
+import useTypes from '../../../store/product.types.pinia';
+import useModels from '../../../store/product.models.pinia';
 
 const { setQueries, getQueries } = useQueryParams()
+const typesStore = useTypes()
+const modelStore = useModels()
 
 const searchInput = ref(getQueries("search"))
 const valueType = ref(getQueries('type'))
 const valueModel = ref(getQueries('model'))
-const models = [
-    { label: 'Samsung', value: 'Samsung' },
-    { label: 'Xiaomi', value: 'Xiaomi' },
-    { label: 'Apple', value: 'Apple' },
-    { label: 'Google', value: 'Google' },
-    { label: "Huawei", value: "Huawei" },
-    { label: "Oppo", value: "Oppo" },
-    { label: "Vivo", value: "Vivo" },
-    { label: "Honor", value: "Honor" },
-    { label: "Boshqalar", value: "Other" },
-]
-
-const types = [
-    { label: 'Aqlli Soat', value: 'smartwatch' },
-    { label: 'Smartfon', value: 'smartfon' },
-    { label: 'Televizor', value: 'TV' },
-    { label: 'Noutbook', value: 'laptop' },
-    { label: 'Monitor', value: 'display' },
-    { label: 'Klaviatura', value: 'keyboard' },
-    { label: 'Sichqoncha', value: 'mouse' },
-    { label: 'Kompyuter', value: 'computer' },
-    { label: 'Quloqchin', value: 'headphones' },
-    { label: 'Planshet', value: 'tablets' },
-    { label: 'Zaryadlovchi qurilmalar', value: 'chargers' },
-]
 
 const handleSearch = debounce(({ target }: { target: any }) => {
     setQueries({
@@ -52,6 +31,11 @@ function filterModel(value: string) {
         model: value || undefined
     })
 }
+
+onMounted(() => {
+    typesStore.getTypes({})
+    modelStore.getModels({})
+})
 </script>
 
 <template>
@@ -63,8 +47,8 @@ function filterModel(value: string) {
             </template>
         </a-input>
         <a-select v-model:value="valueType" @change="filterType" allow-clear class="!w-[48%] md:!w-[180px]"
-            :options="types" size="large" placeholder="Turini tanlang" />
+            :options="typesStore.types" size="large" placeholder="Turini tanlang" />
         <a-select v-model:value="valueModel" @change="filterModel" allow-clear class="!w-full md:!w-[180px]"
-            :options="models" size="large" placeholder="Modelni tanlang" />
+            :options="modelStore.models" size="large" placeholder="Modelni tanlang" />
     </div>
 </template>

@@ -17,6 +17,7 @@ import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue'
 import IconBurger from '../components/icons/IconBurger.vue';
 import BurgerComponent from '../components/BurgerComponent.vue';
 import IconModel from '../components/icons/IconModel.vue';
+import IconTypes from '../components/icons/IconTypes.vue';
 
 const router = useRouter()
 const userStore = useUser()
@@ -33,6 +34,7 @@ const pageTitles: Record<string, string> = {
     Products: "Mahsulotlar",
     Statistics: "Statistika",
     Models: "Mahsulot modellari",
+    Types: "Mahsulot turlari",
     Banners: "Bannerlar",
 }
 
@@ -61,6 +63,7 @@ watch(
         else if (newPath.includes('/statistics')) selectedKeys.value = ['3']
         else if (newPath.includes('/banners')) selectedKeys.value = ['4']
         else if (newPath.includes('/models')) selectedKeys.value = ['5']
+        else if (newPath.includes('/types')) selectedKeys.value = ['6']
         else selectedKeys.value = []
         openMenuMobil.value = false
     }, { immediate: true })
@@ -68,7 +71,7 @@ watch(
 
 <template>
     <a-layout style="min-height: 100vh">
-        <a-layout-sider :width="240" :collapsed-width="80" class="hidden md:block" :style="sidebarDesign"
+        <a-layout-sider :width="260" :collapsed-width="80" class="hidden md:block" :style="sidebarDesign"
             v-model:collapsed="collapsed" :trigger="null" collapsible>
             <div v-if="!collapsed" class="py-4 flex justify-center items-center flex-col gap-1">
                 <h2 class="text-[24px] !font-bold text-[#0D2240] !p-0 !m-0">TEXNOBAZAAR</h2>
@@ -105,14 +108,21 @@ watch(
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Reklamalar</span>
                     </div>
                 </a-menu-item>
-                <a-menu-item :title="!collapsed ? '' : 'Modellar'" @click="router.push({ name: 'Models' })"
+                <a-menu-item :title="!collapsed ? '' : 'Mahsulot modellari'" @click="router.push({ name: 'Models' })"
                     class="!mt-2 bg-transparent" key="5">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-model class="w-5 h-5" />
-                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Modellar</span>
+                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Mahsulot modellari</span>
                     </div>
                 </a-menu-item>
-                <a-sub-menu class="!mt-2 bg-transparent" key="6">
+                <a-menu-item :title="!collapsed ? '' : 'Mahsulot turlari'" @click="router.push({ name: 'Types' })"
+                    class="!mt-2 bg-transparent" key="6">
+                    <div class="flex justify-start gap-2 items-center">
+                        <icon-types class="w-5 h-5" />
+                        <span v-show="!collapsed" class="text-[14px] !font-semibold">Mahsulot turlari</span>
+                    </div>
+                </a-menu-item>
+                <a-sub-menu class="!mt-2 bg-transparent" key="7">
                     <template #title>
                         <div class="flex justify-start gap-2 items-center">
                             <icon-setting class="w-5 h-5" />
@@ -157,7 +167,7 @@ watch(
             </a-layout-content>
         </a-layout>
     </a-layout>
-    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.15</p>
+    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.16</p>
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />

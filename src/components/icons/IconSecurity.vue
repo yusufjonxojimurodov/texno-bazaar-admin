@@ -1,19 +1,7 @@
 <template>
-    <svg width="1em" height="1em" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-            <title>security-verified-solid</title>
-            <g id="Layer_2" data-name="Layer 2">
-                <g id="invisible_box" data-name="invisible box">
-                    <rect width="48" height="48" fill="none"></rect>
-                </g>
-                <g id="icons_Q2" data-name="icons Q2">
-                    <path
-                        d="M24,2S6,7.1,6,8V26.2c0,9.2,13.3,17.3,17,19.5a1.8,1.8,0,0,0,2,0c3.8-2.1,17-10.3,17-19.5V8C42,7.1,24,2,24,2Zm9.4,16.4-11,11a1.9,1.9,0,0,1-2.8,0l-4.9-4.9a2.2,2.2,0,0,1-.4-2.7,2,2,0,0,1,3.1-.2L21,25.2l9.6-9.6a2,2,0,0,1,2.8,2.8Z">
-                    </path>
-                </g>
-            </g>
-        </g>
+    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M11.302 21.615C11.5234 21.7442 11.6341 21.8087 11.7903 21.8422C11.9116 21.8682 12.0884 21.8682 12.2097 21.8422C12.3659 21.8087 12.4766 21.7442 12.698 21.615C14.646 20.4785 20 16.9086 20 12.0001V7.21772C20 6.4182 20 6.01845 19.8692 5.67482C19.7537 5.37126 19.566 5.10039 19.3223 4.88564C19.0465 4.64255 18.6722 4.50219 17.9236 4.22146L12.5618 2.21079C12.3539 2.13283 12.25 2.09385 12.143 2.07839C12.0482 2.06469 11.9518 2.06469 11.857 2.07839C11.75 2.09385 11.6461 2.13283 11.4382 2.21079L6.0764 4.22146C5.3278 4.50219 4.9535 4.64255 4.67766 4.88564C4.43398 5.10039 4.24627 5.37126 4.13076 5.67482C4 6.01845 4 6.4182 4 7.21772V12.0001C4 16.9086 9.35396 20.4785 11.302 21.615Z"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
 </template>

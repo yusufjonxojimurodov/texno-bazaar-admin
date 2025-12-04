@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import IconSearch from '../../../components/icons/IconSearch.vue';
 import PlusIcon from '../../../components/icons/PlusIcon.vue';
-import ModelsForm from './form/ModelsForm.vue';
+import TypesForm from './form/TypesForm.vue';
 import { useQueryParams } from '../../../utils/helpers/useQueryParams';
 import { debounce } from '../../../utils/helpers/debounce';
 
@@ -34,5 +34,5 @@ const handleSearch = debounce(({ target }: { target: any }) => {
         </a-button>
     </div>
 
-    <models-form v-model:open="openCreateModal" />
+    <types-form v-model:open="openCreateModal" />
 </template>
