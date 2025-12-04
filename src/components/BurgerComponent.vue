@@ -12,6 +12,7 @@ import IconAccaount from '../components/icons/IconAccaount.vue';
 import IconSecurity from '../components/icons/IconSecurity.vue';
 import IconClose from './icons/IconClose.vue';
 import IconModel from './icons/IconModel.vue';
+import IconTypes from './icons/IconTypes.vue';
 
 const open = defineModel("open", { type: Boolean, default: false })
 const router = useRouter()
@@ -64,7 +65,14 @@ function closeDrawer() {
                     class="!mt-2 bg-transparent" key="5">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-model class="w-5 h-5" />
-                        <span class="text-[14px] !font-semibold">Modellar</span>
+                        <span class="text-[14px] !font-semibold">Mahsulot modellari</span>
+                    </div>
+                </a-menu-item>
+                <a-menu-item  @click="router.push({ name: 'Types' })"
+                    class="!mt-2 bg-transparent" key="6">
+                    <div class="flex justify-start gap-2 items-center">
+                        <icon-types class="w-5 h-5" />
+                        <span class="text-[14px] !font-semibold">Mahsulot turlari</span>
                     </div>
                 </a-menu-item>
                 <a-sub-menu class="!mt-2  bg-transparent" key="5">
