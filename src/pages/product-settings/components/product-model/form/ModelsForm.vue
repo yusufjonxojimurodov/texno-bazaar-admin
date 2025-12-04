@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useTypes from '../../../../store/product.types.pinia';
+import useModels from '../../../../../store/product.models.pinia';
 
 const open = defineModel("open", {
     type: Boolean,
     default: false
 })
 
-const typesStore = useTypes()
-const { form } = storeToRefs(typesStore)
+const modelsStore = useModels()
+const { form } = storeToRefs(modelsStore)
 
 
 function submit() {
     if (form.value.id) {
-        typesStore.updateType(closeModal)
+        modelsStore.updateModel(closeModal)
     } else {
-        typesStore.createType(closeModal)
+        modelsStore.createModel(closeModal)
     }
 }
 
@@ -53,7 +53,7 @@ function closeModal() {
                 <a-button @click="closeModal" danger type="primary" size="large">
                     Bekor qilish
                 </a-button>
-                <a-button :loading="typesStore.buttonLoading" form="modelForm" html-type="submit" type="primary" size="large">
+                <a-button :loading="modelsStore.buttonLoading" form="modelForm" html-type="submit" type="primary" size="large">
                     {{ form.id ? 'Saqlash' : 'Yaratish' }}
                 </a-button>
             </div>

@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useModels from '../../../../store/product.models.pinia';
+import useTypes from '../../../../../store/product.types.pinia';
 
 const open = defineModel("open", {
     type: Boolean,
     default: false
 })
 
-const modelsStore = useModels()
-const { form } = storeToRefs(modelsStore)
+const typesStore = useTypes()
+const { form } = storeToRefs(typesStore)
 
 
 function submit() {
     if (form.value.id) {
-        modelsStore.updateModel(closeModal)
+        typesStore.updateType(closeModal)
     } else {
-        modelsStore.createModel(closeModal)
+        typesStore.createType(closeModal)
     }
 }
 
@@ -30,10 +30,10 @@ function closeModal() {
 <template>
     <a-modal
         v-model:open="open"
-        :title="form.id ? `Modelni o'zgartirish` : 'Model yaratish'"
+        :title="form.id ? `Turni o'zgartirish` : 'Turni yaratish'"
         centered
     >
-        <a-form :model="form" id="modelForm" @finish="submit" layout="vertical">
+        <a-form :model="form" id="typeForm" @finish="submit" layout="vertical">
             <a-row :gutter="[24,24]">
                 <a-col :span="12">
                     <a-form-item label="Label" :rules="[{ required: true, message: 'Majburiy maydon' }]" name="label">
@@ -53,7 +53,7 @@ function closeModal() {
                 <a-button @click="closeModal" danger type="primary" size="large">
                     Bekor qilish
                 </a-button>
-                <a-button :loading="modelsStore.buttonLoading" form="modelForm" html-type="submit" type="primary" size="large">
+                <a-button :loading="typesStore.buttonLoading" form="typeForm" html-type="submit" type="primary" size="large">
                     {{ form.id ? 'Saqlash' : 'Yaratish' }}
                 </a-button>
             </div>

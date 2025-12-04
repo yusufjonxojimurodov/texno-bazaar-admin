@@ -12,7 +12,6 @@ import IconAccaount from '../components/icons/IconAccaount.vue';
 import IconSecurity from '../components/icons/IconSecurity.vue';
 import IconClose from './icons/IconClose.vue';
 import IconModel from './icons/IconModel.vue';
-import IconTypes from './icons/IconTypes.vue';
 
 const open = defineModel("open", { type: Boolean, default: false })
 const router = useRouter()
@@ -61,17 +60,10 @@ function closeDrawer() {
                         <span class="text-[14px] !font-semibold">Reklamalar</span>
                     </div>
                 </a-menu-item>
-                <a-menu-item @click="router.push({ name: 'Models' })"
-                    class="!mt-2 bg-transparent" key="5">
-                    <div class="flex justify-start gap-2 items-center">
-                        <icon-model class="w-5 h-5" />
-                        <span class="text-[14px] !font-semibold">Mahsulot modellari</span>
-                    </div>
-                </a-menu-item>
-                <a-menu-item  @click="router.push({ name: 'Types' })"
+                <a-menu-item  @click="router.push({ name: 'ProductSetting' })"
                     class="!mt-2 bg-transparent" key="6">
                     <div class="flex justify-start gap-2 items-center">
-                        <icon-types class="w-5 h-5" />
+                        <icon-model class="w-5 h-5" />
                         <span class="text-[14px] !font-semibold">Mahsulot turlari</span>
                     </div>
                 </a-menu-item>
@@ -97,7 +89,7 @@ function closeDrawer() {
                     </div>
                 </a-sub-menu>
             </a-menu>
-            <p class="absolute bottom-2 left-[30%] !font-semibold text-gray-500">Version 1.0.16</p>
+            <p class="absolute bottom-2 left-[30%] !font-semibold text-gray-500">Version 1.0.17</p>
         </a-drawer>
     </div>
 

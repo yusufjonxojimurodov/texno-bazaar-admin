@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import BaseTable from '../../../components/baseComponents/BaseTable.vue';
-import { modelColumn } from '../../../columns/model.table';
-import useModels from '../../../store/product.models.pinia';
-import IconDelete from '../../../components/icons/IconDelete.vue';
-import IconEdit from '../../../components/icons/IconEdit.vue';
-import ModelsForm from './form/ModelsForm.vue';
+import BaseTable from '../../../../components/baseComponents/BaseTable.vue';
+import { typeColumn } from '../../../../columns/type.table';
+import IconDelete from '../../../../components/icons/IconDelete.vue';
+import IconEdit from '../../../../components/icons/IconEdit.vue';
+import TypesForm from './form/TypesForm.vue';
 import dayjs from 'dayjs';
 import { ref } from 'vue';
+import useTypes from '../../../../store/product.types.pinia';
 
-const modelsStore = useModels()
+const typesStore = useTypes()
 const openEditModal = ref(false)
 
 function openEditModalFunc(id: null | number, label: string, value: string) {
-    modelsStore.form.id = id
-    modelsStore.form.label = label
-    modelsStore.form.value = value
+    typesStore.form.id = id
+    typesStore.form.label = label
+    typesStore.form.value = value
     openEditModal.value = true
 }
 
 function deleteModel(id: number) {
-    modelsStore.deleteModel(id)
+    typesStore.deleteType(id)
 }
 </script>
 
 <template>
-    <base-table :show-pagination="false" :columns="modelColumn" :loading="modelsStore.loading" :data="modelsStore.models">
+    <base-table :show-pagination="false" :columns="typeColumn" :loading="typesStore.loading" :data="typesStore.types">
         <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'label'">
                 {{ record.label }}
@@ -60,5 +60,5 @@ function deleteModel(id: number) {
         </template>
     </base-table>
 
-    <models-form v-model:open="openEditModal" />
+    <types-form v-model:open="openEditModal" />
 </template>
