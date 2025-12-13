@@ -37,7 +37,7 @@ function closeModal() {
             <a-row :gutter="[24,24]">
                 <a-col :span="12">
                     <a-form-item label="Label" :rules="[{ required: true, message: 'Majburiy maydon' }]" name="label">
-                        <a-input v-model:value="form.label" size="large" placeholder="Labelni kiriting" />
+                        <a-input :maxlength="30"  v-model:value="form.label" size="large" placeholder="Labelni kiriting" />
                     </a-form-item>
                 </a-col>
                 <a-col :span="12">

@@ -86,7 +86,7 @@ async function createBanner() {
                     :max-count="1" @remove="handleRemove" :show-upload-list="{ showPreviewIcon: false }">
                     <template #default>
                         <div class="!flex justify-center items-center gap-1" v-if="!bannerModel.imgList.length">
-                            <IconImgPlus class="w-6 h-6" />
+                            <IconImgPlus class="w-6 h-6 text-gray-500" />
                             <div class="mt-1 text-gray-500 text-sm">Yuklash</div>
                         </div>
                     </template>

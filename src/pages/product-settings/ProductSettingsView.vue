@@ -13,7 +13,7 @@ const modelsStore = useModels()
 const typesStore = useTypes()
 const route = useRoute()
 
-const tabsValue = computed(() => getQueries("tab"))
+const tabsValue = computed(() => getQueries("tab") || '1')
 
 watch(() => route.query, () => {
     const searchValue = ref(getQueries("search"))

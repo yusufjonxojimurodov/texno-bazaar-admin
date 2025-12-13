@@ -13,7 +13,6 @@ interface loginForm {
 const authStore = useUser()
 
 const openDocumentationModal = ref<boolean>(false)
-const phoneInput = ref<string>("");
 const passwordInput = ref<any>(null);
 const loginModel = ref<loginForm>({
     phone: "",
@@ -66,7 +65,7 @@ function focusPassword() {
         </div>
         <a-form @finish="login" layout="vertical" :model="loginModel">
             <a-form-item label="Telefon raqam" name="phone" :rules="phoneRules">
-                <a-input @keyup.enter="focusPassword" ref="phoneInput" autocomplete="off" size="large"
+                <a-input @keyup.enter="focusPassword" autocomplete="off" size="large"
                     v-model:value="loginModel.phone" addonBefore="+998" :maxLength="12" @input="handleInput"
                     placeholder="00-000-00-00" />
             </a-form-item>

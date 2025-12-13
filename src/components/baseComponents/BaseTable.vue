@@ -30,6 +30,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['pageChange'])
+const windowWidth = ref(window.innerWidth)
 
 const getPagination = () => {
     return props.showPagination
@@ -71,7 +72,7 @@ const handleTableChange = (pag: TablePaginationConfig) => {
 
 <template>
    <a-table
-        :scroll="{ x: 'max-content' }"
+        :scroll="{ x: 'max-content', y: windowWidth / 2.5 }"
         :data-source="props.data"
         :columns="props.columns"
         :loading="props.loading"

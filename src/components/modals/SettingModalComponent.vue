@@ -43,27 +43,47 @@ function updateUser() {
 function closeModal() {
     open.value = false
 }
+
+const disabledDate = (current: any) => {
+    return current && current.year() >= 2015
+}
 </script>
 
 <template>
     <a-modal @cancel="open = false" :open="open" title="Profilni tahrirlash" centered>
         <a-form id="updateForm" @finish="updateUser" layout="vertical" :model="updateForm">
-            <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="name" label="Ism">
-                <a-input v-model:value="updateForm.name" class="!w-full" size="large"
-                    placeholder="Ismingizni kiriting" />
-            </a-form-item>
-            <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="surname" label="Familya">
-                <a-input v-model:value="updateForm.surname" class="!w-full" size="large"
-                    placeholder="Familyangizni kiriting" />
-            </a-form-item>
-            <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="email" label="Email manzil">
-                <a-input v-model:value="updateForm.email" class="!w-full" size="large"
-                    placeholder="Emailingizni kiriting" />
-            </a-form-item>
-            <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="birthDate"
-                label="Tug'ilgan sanangiz">
-                <a-date-picker size="large" class="!w-full" v-model:value="updateForm.birth_date" />
-            </a-form-item>
+            <a-row :gutter="[24, 24]">
+                <a-col :span="12">
+                    <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="name" label="Ism">
+                        <a-input v-model:value="updateForm.name" class="!w-full" size="large"
+                            placeholder="Ismingizni kiriting" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="surname"
+                        label="Familya">
+                        <a-input v-model:value="updateForm.surname" class="!w-full" size="large"
+                            placeholder="Familyangizni kiriting" />
+                    </a-form-item>
+                </a-col>
+            </a-row>
+            <a-row :gutter="[24, 24]">
+                <a-col :span="12">
+                    <a-form-item
+                        :rules="[{ required: true, message: 'Majburiy maydon' }, { type: 'email', message: 'Email formati notogri' }]"
+                        name="email" label="Email manzil">
+                        <a-input v-model:value="updateForm.email" class="!w-full" size="large"
+                            placeholder="Emailingizni kiriting" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item :rules="[{ required: true, message: 'Majburiy maydon' }]" name="birth_date"
+                        label="Tug'ilgan sanangiz">
+                        <a-date-picker :disabled-date="disabledDate" size="large" class="!w-full"
+                            v-model:value="updateForm.birth_date" />
+                    </a-form-item>
+                </a-col>
+            </a-row>
         </a-form>
 
         <template #footer>
@@ -71,7 +91,8 @@ function closeModal() {
                 <a-button danger @click="open = false" size="large">
                     Yopish
                 </a-button>
-                <a-button :loading="userStore.buttonLoader" form="updateForm" html-type="submit" size="large" type="primary">
+                <a-button :loading="userStore.buttonLoader" form="updateForm" html-type="submit" size="large"
+                    type="primary">
                     Saqlash
                 </a-button>
             </a-space>

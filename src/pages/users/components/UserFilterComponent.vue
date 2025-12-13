@@ -49,15 +49,15 @@ function filterRole(value: string) {
 </script>
 
 <template>
-    <div class="flex justify-end items-center gap-2 mb-5">
+    <div class="flex justify-end items-center gap-2 py-2 mb-4 flex-wrap">
         <a-input v-model:value="userSearch" @input="handleSearch" placeholder="Qidirish..." size="large"
-            style="width: 180px;">
+            class="!w-full sm:!w-[220px]">
             <template #addonAfter>
                 <icon-search class="w-5 h-5 text-gray-500" />
             </template>
         </a-input>
         <a-select allow-clear :options="filterRoleOptions" @change="filterRole" v-model:value="userRole"
-            placeholder="Rolni tanlang" size="large" style="width: 180px;">
+            placeholder="Rolni tanlang" size="large" class="!w-full sm:!w-[220px]">
             <template #suffixIcon>
                 <icon-user-check class="w-4 h-4 text-gray-500" />
             </template>

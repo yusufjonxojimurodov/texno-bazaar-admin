@@ -11,6 +11,7 @@ const useHelper = defineStore("helper", {
       localStorage.removeItem("texnoBazaar");
       this.token = "";
       router.push("/login");
+      window.location.reload()
     },
   },
 });

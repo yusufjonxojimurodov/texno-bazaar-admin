@@ -14,7 +14,7 @@ export interface UserInfo {
   role: string;
   surname: string;
   username: string;
-  avatar_content_type: string,
+  avatar_content_type: string;
   id: string | number | null;
 }
 
@@ -241,7 +241,11 @@ const useUser = defineStore("user", {
         method: "PUT",
         data: form,
       })
-        .then(() => {
+        .then(({ data }) => {
+          const findedUser = this.allUsers.findIndex((user) => user.id === id);
+          if (findedUser !== -1) {
+            this.allUsers[findedUser] = data.user;
+          }
           notification.success({
             message: "Foydalanuvchi ma'lumotlari yangilandi",
           });

@@ -17,6 +17,7 @@ import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue'
 import IconBurger from '../components/icons/IconBurger.vue';
 import BurgerComponent from '../components/BurgerComponent.vue';
 import IconModel from '../components/icons/IconModel.vue';
+import IconShop from '../components/icons/IconShop.vue';
 
 const router = useRouter()
 const userStore = useUser()
@@ -33,6 +34,7 @@ const pageTitles: Record<string, string> = {
     Products: "Mahsulotlar",
     Statistics: "Statistika",
     ProductSettings: "Mahsulot turlari",
+    Shops: "Do'konlar",
     Banners: "Bannerlar",
 }
 
@@ -61,6 +63,7 @@ watch(
         else if (newPath.includes('/statistics')) selectedKeys.value = ['3']
         else if (newPath.includes('/banners')) selectedKeys.value = ['4']
         else if (newPath.includes('/product-setting')) selectedKeys.value = ['5']
+        else if (newPath.includes('/shops')) selectedKeys.value = ['6']
         else selectedKeys.value = []
         openMenuMobil.value = false
     }, { immediate: true })
@@ -105,8 +108,8 @@ watch(
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Reklamalar</span>
                     </div>
                 </a-menu-item>
-                <a-menu-item :title="!collapsed ? '' : 'Mahsulot turlari'" @click="router.push({ name: 'ProductSettings' })"
-                    class="!mt-2 bg-transparent" key="5">
+                <a-menu-item :title="!collapsed ? '' : 'Mahsulot turlari'"
+                    @click="router.push({ name: 'ProductSettings' })" class="!mt-2 bg-transparent" key="5">
                     <div class="flex justify-start gap-2 items-center">
                         <icon-model class="w-5 h-5" />
                         <span v-show="!collapsed" class="text-[14px] !font-semibold">Mahsulot turlari</span>
@@ -157,7 +160,7 @@ watch(
             </a-layout-content>
         </a-layout>
     </a-layout>
-    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.17</p>
+    <p class="fixed bottom-2 left-18 hidden md:block !font-semibold text-gray-500">Version 1.0.20</p>
 
     <setting-modal-component v-model:open="openSettingModal" />
     <setting-password-modal v-model:open="openPasswordModal" />

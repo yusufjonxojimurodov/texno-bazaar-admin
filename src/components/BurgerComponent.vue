@@ -89,7 +89,7 @@ function closeDrawer() {
                     </div>
                 </a-sub-menu>
             </a-menu>
-            <p class="absolute bottom-2 left-[30%] !font-semibold text-gray-500">Version 1.0.17</p>
+            <p class="absolute bottom-2 left-[30%] !font-semibold text-gray-500">Version 1.0.20</p>
         </a-drawer>
     </div>
 

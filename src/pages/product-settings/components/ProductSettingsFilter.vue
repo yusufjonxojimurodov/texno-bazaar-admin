@@ -37,7 +37,7 @@ const handleSearch = debounce(({ target }: { target: any }) => {
             <a-tab-pane key="1" tab="Mahsulot modellari"></a-tab-pane>
             <a-tab-pane key="2" tab="Mahsulot turlari"></a-tab-pane>
         </a-tabs>
-        <div class="flex justify-end items-center gap-2 py-2 mb-4 ">
+        <div class="flex justify-end items-center gap-2 py-2 mb-4">
             <a-input @input="handleSearch" v-model:value="searchValue" placeholder="Qidiring..." size="large"
                 class="!w-full sm:!w-[220px]">
                 <template #addonAfter>

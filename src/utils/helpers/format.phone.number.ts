@@ -35,22 +35,28 @@ export function formatPhoneNumber(e: Event): string | undefined {
 export function formatPhoneNumberString(value: string): string {
   if (!value) return "";
 
-  const v = value.replace(/[^0-9]/g, "");
-  const l = v.length;
+  let v = value.replace(/[^0-9]/g, "");
 
-  let lastValue = "";
-
-  if (l < 3) {
-    lastValue = v;
-  } else if (l < 6) {
-    lastValue = `${v.slice(0, 2)} ${v.slice(2)}`;
-  } else if (l < 8) {
-    lastValue = `${v.slice(0, 2)} ${v.slice(2, 5)}-${v.slice(5)}`;
-  } else {
-    lastValue = `${v.slice(0, 2)} ${v.slice(2, 5)}-${v.slice(5, 7)}-${v.slice(
-      7
-    )}`;
+  if (v.startsWith("998")) {
+    v = v.slice(3);
   }
 
-  return lastValue;
+  const l = v.length;
+
+  if (l <= 2) return v;
+  if (l <= 5) return `${v.slice(0, 2)} ${v.slice(2)}`; 
+  if (l <= 7) return `${v.slice(0, 2)} ${v.slice(2, 5)} ${v.slice(5)}`; 
+  return `${v.slice(0, 2)} ${v.slice(2, 5)} ${v.slice(5, 7)} ${v.slice(7, 9)}`; 
+}
+
+export const normalizePhone = (phone: string) => {
+  if (!phone) return ''
+
+  let digits = phone.replace(/\D/g, '')
+
+  if (!digits.startsWith('998')) {
+    digits = '998' + digits
+  }
+
+  return `+${digits}`
 }

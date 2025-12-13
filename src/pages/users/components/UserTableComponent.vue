@@ -12,6 +12,7 @@ import type { User } from './UserInfoDrawer.vue';
 import IconInfo from '../../../components/icons/IconInfo.vue';
 import IconPermisson from '../../../components/icons/IconPermisson.vue';
 import SettingPermissionModalComponent from '../../../components/modals/SettingPermissionModalComponent.vue';
+import { formatPhoneNumberString } from '../../../utils/helpers/format.phone.number';
 import { storeToRefs } from 'pinia';
 
 const userStore = useUser()
@@ -49,7 +50,7 @@ function openModalEdit(record: any) {
   userModel.value.surname = record.surname
   userModel.value.email = record.email
   userModel.value.username = record.username
-  userModel.value.phone = record.phone
+  userModel.value.phone = formatPhoneNumberString(record.phone)
 
   openUserForm.value = true
 }
@@ -152,8 +153,8 @@ function openPermissionSettingModal(record: any) {
               <icon-info class="w-8 h-8" />
             </template>
           </a-button>
-          <a-button v-if="userStore.user.role !== 'moderator'" @click="openPermissionSettingModal(record)"
-            class="!rounded-full !w-8 !h-8 !flex !justify-center items-center" type="primary" size="small">
+          <a-button v-if="userStore.user.role !== 'moderator'" :disabled="record.role !== 'moderator'" @click="openPermissionSettingModal(record)"
+            class="!rounded-full !text-white !w-8 !h-8 !flex !justify-center items-center" type="primary" size="small">
             <template #icon>
               <icon-permisson class="w-5 h-5" />
             </template>

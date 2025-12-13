@@ -5,7 +5,7 @@ import StatisticDiagrammApex from './components/StatisticDiagrammApex.vue';
 import StatisticFilterComponent from './components/StatisticFilterComponent.vue';
 import { useRoute } from 'vue-router';
 import { useQueryParams } from '../../utils/helpers/useQueryParams';
-import StatisticUsers from './components/StatisticUsers.vue';
+import StatisticDiagrammUsers from './components/StatisticDiagrammUsers.vue';
 
 const route = useRoute()
 const statisticStore = useStatistic()
@@ -23,6 +23,6 @@ watch(() => route.query, () => {
     <a-spin :spinning="statisticStore.loading" size="middle">
         <statistic-filter-component />
         <statistic-diagramm-apex />
-        <statistic-users />
+        <statistic-diagramm-users class="mt-4!" />
     </a-spin>
 </template>

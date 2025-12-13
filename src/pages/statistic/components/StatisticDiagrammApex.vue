@@ -22,7 +22,7 @@ const series = computed(() => {
 
 const chartOptions = computed(() => ({
     chart: {
-        type: "line",
+        type: "area",
         height: 350,
         toolbar: { show: false },
     },
@@ -52,14 +52,14 @@ const monthNames = [
 ];
 
 const currentMonthName = computed(() => {
-    const month = statisticStore.graphInfo?.month;
-    statisticStore.currentMonthName = monthNames[month - 1]! || ""
-    return month ? monthNames[month - 1] : "";
-});
+    const month = statisticStore.graphInfo?.month
+    if (!month) return ""
+    return monthNames[month - 1] ?? ""
+})
 </script>
 
 <template>
-    <div class="p-5">
+    <a-card title="Faollik statistikasi">
         <h2 class="text-xl font-semibold mb-4 text-center">
             {{ statisticStore.graphInfo.year }}-yil
             {{ currentMonthName }} statistikasi
@@ -70,7 +70,7 @@ const currentMonthName = computed(() => {
         </div>
 
         <div v-else>
-            <ApexChart width="100%" height="350" type="line" :options="chartOptions" :series="series" />
+            <ApexChart width="100%" height="350" type="area" :options="chartOptions" :series="series" />
         </div>
-    </div>
+    </a-card>
 </template>
