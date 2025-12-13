@@ -2,10 +2,12 @@
 import { notification } from 'ant-design-vue';
 import { ref } from 'vue';
 import useUser from '../../store/user.pinia';
+import { useRouter } from 'vue-router';
 
 const open = defineModel("open", { type: Boolean, default: false })
 
 const userStore = useUser()
+const router = useRouter()
 
 interface password {
     newPassword: Number | null;
@@ -17,7 +19,7 @@ const updatePasswordModel = ref<password>({
     repeatPassword: null
 })
 
-function updatePassword() {
+async function updatePassword() {
     if (updatePasswordModel.value.newPassword !== updatePasswordModel.value.repeatPassword) {
         notification.warn({
             message: "Kirg'izilgan parollar bir xil emas",
@@ -30,7 +32,9 @@ function updatePassword() {
         password: updatePasswordModel.value.newPassword
     }
 
-    userStore.updatePassword(password, closeModal)
+    await userStore.updatePassword(password, closeModal)
+    router.push({ name: "Login" })
+    window.location.reload()
 }
 
 function closeModal() {

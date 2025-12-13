@@ -151,7 +151,7 @@ const useUser = defineStore("user", {
     updatePassword(password: Object, callback: Function) {
       this.buttonLoader = true;
 
-      api({
+      return api({
         url: "/api/users/update-profile",
         method: "PUT",
         data: password,
