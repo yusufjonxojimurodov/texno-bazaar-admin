@@ -17,7 +17,6 @@ import SettingPasswordModal from '../components/modals/SettingPasswordModal.vue'
 import IconBurger from '../components/icons/IconBurger.vue';
 import BurgerComponent from '../components/BurgerComponent.vue';
 import IconModel from '../components/icons/IconModel.vue';
-import IconShop from '../components/icons/IconShop.vue';
 
 const router = useRouter()
 const userStore = useUser()
